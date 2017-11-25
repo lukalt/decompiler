@@ -26,12 +26,14 @@ public class StackActionRegistry {
         // variable loading and storing
         this.register(LoadAction.class, "load", VariableStorage.getPrimitiveTypes());
         this.register(StoreAction.class, "store", VariableStorage.getPrimitiveTypes());
+        this.register(ALoadAction.class, "aload");
 
         // operations between primitives on the stack
         this.register(AddAction.class, "add", VariableStorage.getPrimitiveTypes());
         this.register(SubAction.class, "sub", VariableStorage.getPrimitiveTypes());
         this.register(DivAction.class, "div", VariableStorage.getPrimitiveTypes());
         this.register(MulAction.class, "mul", VariableStorage.getPrimitiveTypes());
+        this.register(RemAction.class, "rem", VariableStorage.getPrimitiveTypes()); // mod
 
         // constant pushing
         this.register(BiPushAction.class, "bipush"); // add const byte
@@ -41,6 +43,10 @@ public class StackActionRegistry {
         this.register(LdcAction.class, "ldc_w"); // identical as ldc, just bytecode purposes
         this.register(Ldc2WAction.class, "ldc2_w"); // ldc for double precision
         this.register(ConstAction.class, "const", VariableStorage.getPrimitiveTypes());
+        this.register(AConstNullAction.class, "aconst_null");
+
+        // method invocation
+        this.register(InvokeSpecialAction.class, "invokespecial");
 
         // control structures
         this.register(ReturnAction.class, "return");

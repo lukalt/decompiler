@@ -1,9 +1,10 @@
 /*
-  G:\projects\decompiler\Test.class decompiled at Sat Nov 25 20:02:03 CET 2017
+  G:\projects\decompiler\Test.class decompiled at Sat Nov 25 20:26:13 CET 2017
 */
 public class Test {
 
     public Test(){
+        super();
         return;
     }
 

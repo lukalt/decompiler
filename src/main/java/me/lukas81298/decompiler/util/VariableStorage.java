@@ -82,7 +82,8 @@ public class VariableStorage {
         BYTE("byte", "b", b-> {
             return Byte.parseByte(b);
         }),
-        OBJECT("Object", "a", s -> s); // ik this is not a primitive :D
+        OBJECT("Object", "a", s -> s),
+        NULL("null", "", s -> s); // ik this is not a primitive :D
 
         private final String label;
         private final String prefix;
