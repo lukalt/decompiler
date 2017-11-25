@@ -19,6 +19,11 @@ public class VariableStorage {
             PrimitiveType.INT, PrimitiveType.DOUBLE, PrimitiveType.FLOAT, PrimitiveType.BYTE, PrimitiveType.LONG
     };
 
+    @Getter
+    private final static PrimitiveType[] primitiveTypesAndObject = new PrimitiveType[]{
+            PrimitiveType.INT, PrimitiveType.DOUBLE, PrimitiveType.FLOAT, PrimitiveType.BYTE, PrimitiveType.LONG, PrimitiveType.OBJECT
+    };
+
     private final TIntObjectMap<Variable> variables = new TIntObjectHashMap<>();
 
     public void set(int index, Object object, PrimitiveType type) {
@@ -70,20 +75,21 @@ public class VariableStorage {
         INT("int", "i", s -> {
             return Integer.parseInt(s);
         }),
-        DOUBLE("double", "d", s-> {
+        DOUBLE("double", "d", s -> {
             return Double.parseDouble(s);
         }),
-        FLOAT("float", "f", s-> {
+        FLOAT("float", "f", s -> {
             return Float.parseFloat(s);
         }),
-        LONG("long", "l", l-> {
+        LONG("long", "l", l -> {
             return Long.parseLong(l);
         }),
-        BYTE("byte", "b", b-> {
+        BYTE("byte", "b", b -> {
             return Byte.parseByte(b);
         }),
         OBJECT("Object", "a", s -> s),
-        NULL("null", "", s -> s); // ik this is not a primitive :D
+        NULL("null", "", s -> s),
+        EXPRESSION("Object", "", s -> s); // ik this is not a primitive :D
 
         private final String label;
         private final String prefix;

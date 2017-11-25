@@ -4,6 +4,7 @@ import gnu.trove.set.TIntSet;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
+import me.lukas81298.decompiler.util.Parser;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 import java.util.ArrayList;
@@ -22,5 +23,6 @@ public class Block {
     private final IndentedPrintWriter writer;
     private final List<VariableStorage.Variable> operandStack = new ArrayList<>();
     private final TIntSet definedVariables;
+    private final Parser parser;
 
 }

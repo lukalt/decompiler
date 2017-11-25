@@ -20,7 +20,7 @@ public abstract class BlockStructure extends AbstractStructure {
         if(!parser.getAndRemove().equals("Code:")) {
             throw  new DecompileException("Missing 'Code:'");
         }
-        Block block = new Block(level, out,  new TIntHashSet());
+        Block block = new Block(level, out,  new TIntHashSet(), parser);
         do {
             String line = parser.getAndRemove();
             if(line.isEmpty()) {

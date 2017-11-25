@@ -12,11 +12,11 @@ public class LdcAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
-        if(arg.startsWith("\"")) {
+        if(arg.startsWith("\"")) { // handle as string
             block.getOperandStack().add(new VariableStorage.Variable(arg, VariableStorage.PrimitiveType.OBJECT));
-        } else if(arg.contains(".")) {
+        } else if(arg.contains(".")) { // handle as float
             block.getOperandStack().add(new VariableStorage.Variable(Float.parseFloat(arg), VariableStorage.PrimitiveType.FLOAT));
-        } else {
+        } else { // handle as int
             block.getOperandStack().add(new VariableStorage.Variable(Integer.parseInt(arg), VariableStorage.PrimitiveType.INT));
         }
         return true;

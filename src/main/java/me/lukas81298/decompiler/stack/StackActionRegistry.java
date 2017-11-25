@@ -25,7 +25,7 @@ public class StackActionRegistry {
     public StackActionRegistry() {
         // variable loading and storing
         this.register(LoadAction.class, "load", VariableStorage.getPrimitiveTypes());
-        this.register(StoreAction.class, "store", VariableStorage.getPrimitiveTypes());
+        this.register(StoreAction.class, "store", VariableStorage.getPrimitiveTypesAndObject());
         this.register(ALoadAction.class, "aload");
 
         // operations between primitives on the stack
@@ -47,6 +47,14 @@ public class StackActionRegistry {
 
         // method invocation
         this.register(InvokeSpecialAction.class, "invokespecial");
+        this.register(InvokeVirtualAction.class, "invokevirtual");
+        this.register(InvokeStaticAction.class, "invokestatic");
+        this.register(InvokeInterfaceAction.class, "invokeinterface");
+
+        this.register(GetStaticAction.class, "getstatic");
+
+        this.register(DupAction.class, "dup"); // duplicate head of stack
+        this.register(NewAction.class, "new");
 
         // control structures
         this.register(ReturnAction.class, "return");

@@ -1,22 +1,26 @@
 /*
-  G:\projects\decompiler\Test.class decompiled at Sat Nov 25 20:26:13 CET 2017
+  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 00:36:00 CET 2017
 */
 public class Test {
 
     public Test(){
         super();
-        return;
     }
 
     public static void main(java.lang.String[] param0){
-        int local_1 = 118;
-        int local_2 = 1;
-        int local_3 = (local_1 + local_2);
-        int local_4 = (local_3 - local_1);
-        int local_5 = (local_1 * local_4);
-        long local_6 = 1324567;
-        local_3 = local_5;
-        local_4 = (local_3 * local_4);
+        int local1 = 118;
+        int local2 = 1;
+        int local3 = (local1 + local2);
+        int local4 = (local3 - local1);
+        Object local5 = new java.lang.Object();
+        java.lang.System.out.println(local5);
+        Object local6 = new java.lang.Object();
+        int local7 = (local1 * local4);
+        long local8 = 1324567;
+        local3 = (local7 % local3);
+        local4 = (local3 * local4);
+        java.lang.System.out.println(local4);
+        java.lang.System.exit(local4);
         return;
     }
 
