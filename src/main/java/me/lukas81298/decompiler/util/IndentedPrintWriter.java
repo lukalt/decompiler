@@ -1,4 +1,4 @@
-package me.lukas81298.decompiler;
+package me.lukas81298.decompiler.util;
 
 import com.google.common.base.Strings;
 
@@ -11,6 +11,8 @@ import java.util.Objects;
  * @since 24.11.2017
  */
 public class IndentedPrintWriter extends PrintWriter {
+
+    private final String INDENTION_SEQUENCE = "    ";
 
     public IndentedPrintWriter(Writer out) {
         super(out);
@@ -33,6 +35,6 @@ public class IndentedPrintWriter extends PrintWriter {
     }
 
     private String indent(int i) {
-        return Strings.repeat("  ", i);
+        return Strings.repeat(INDENTION_SEQUENCE, i);
     }
 }

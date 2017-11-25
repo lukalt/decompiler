@@ -1,5 +1,5 @@
 /*
-G:\projects\decompiler\Aufzug.class decompiled at Sat Nov 25 00:26:24 CET 2017
+G:\projects\decompiler\Aufzug.class decompiled at Sat Nov 25 00:42:11 CET 2017
 */
 public class Aufzug {
 
@@ -11,7 +11,7 @@ public class Aufzug {
   private final int maxStockwerk;
   private final int maxPersonen;
   private final int id;
-  public Aufzug(int, int, (){
+  public Aufzug(int c_int_0, int c_int_1, int c_int_2){
     aload_0; //  @ 0
     invokespecial #1; // Method java/lang/Object."<init>":()V @ 1
     aload_0; //  @ 4
@@ -38,7 +38,7 @@ public class Aufzug {
     return;
   }
 
-  public Aufzug(int, int); (){
+  public Aufzug(int c_int_0, int c_int_1){
     aload_0; //  @ 0
     iload_1; //  @ 1
     iconst_0; //  @ 2
@@ -49,7 +49,7 @@ public class Aufzug {
     return;
   }
 
-  public boolean fahren (int p_int_0){
+  public boolean fahren(){
     aload_0; //  @ 0
     getfield      #9; // Field tuerAuf:Z @ 1
     ifne          69; //  @ 4
@@ -92,7 +92,7 @@ public class Aufzug {
     return;
   }
 
-  public int einsteigen (int p_int_0){
+  public int einsteigen(){
     aload_0; //  @ 0
     getfield      #9; // Field tuerAuf:Z @ 1
     ifeq          38; //  @ 4
@@ -117,7 +117,7 @@ public class Aufzug {
     return;
   }
 
-  public void aussteigen (int p_int_0){
+  public void aussteigen(){
     aload_0; //  @ 0
     getfield      #9; // Field tuerAuf:Z @ 1
     ifeq          21; //  @ 4
@@ -134,7 +134,7 @@ public class Aufzug {
     return;
   }
 
-  public int getMaxPersonen (){
+  public int getMaxPersonen(){
     aload_0; //  @ 0
     getfield      #6; // Field maxPersonen:I @ 1
     return;
@@ -142,7 +142,7 @@ public class Aufzug {
     return;
   }
 
-  public void tuerOeffnen (){
+  public void tuerOeffnen(){
     aload_0; //  @ 0
     iconst_1; //  @ 1
     putfield      #9; // Field tuerAuf:Z @ 2
@@ -151,7 +151,7 @@ public class Aufzug {
     return;
   }
 
-  public void tuerSchliessen (){
+  public void tuerSchliessen(){
     aload_0; //  @ 0
     iconst_0; //  @ 1
     putfield      #9; // Field tuerAuf:Z @ 2
@@ -160,7 +160,7 @@ public class Aufzug {
     return;
   }
 
-  public int getMinStockwerk (){
+  public int getMinStockwerk(){
     aload_0; //  @ 0
     getfield      #4; // Field minStockwerk:I @ 1
     return;
@@ -168,7 +168,7 @@ public class Aufzug {
     return;
   }
 
-  public int getMaxStockwerk (){
+  public int getMaxStockwerk(){
     aload_0; //  @ 0
     getfield      #5; // Field maxStockwerk:I @ 1
     return;
@@ -176,7 +176,7 @@ public class Aufzug {
     return;
   }
 
-  public int getAktuellesStockwerk (){
+  public int getAktuellesStockwerk(){
     aload_0; //  @ 0
     getfield      #7; // Field aktuellesStockwerk:I @ 1
     return;
@@ -184,7 +184,7 @@ public class Aufzug {
     return;
   }
 
-  public int getAnzahlPersonen (){
+  public int getAnzahlPersonen(){
     aload_0; //  @ 0
     getfield      #10; // Field anzahlPersonen:I @ 1
     return;
@@ -192,7 +192,7 @@ public class Aufzug {
     return;
   }
 
-  public boolean isTuerAuf (){
+  public boolean isTuerAuf(){
     aload_0; //  @ 0
     getfield      #9; // Field tuerAuf:Z @ 1
     return;
@@ -200,7 +200,7 @@ public class Aufzug {
     return;
   }
 
-  public int getID (){
+  public int getID(){
     aload_0; //  @ 0
     getfield      #3; // Field id:I @ 1
     return;
@@ -208,5 +208,12 @@ public class Aufzug {
     return;
   }
 
-  static {};
-// Error: me.lukas81298.decompiler.DecompileException: Code: did not end with a simicolon
+  static {
+    iconst_0; //  @ 0
+    putstatic     #2; // Field idCounter:I @ 1
+    return;
+    return; //  @ 4
+  }
+
+}
+

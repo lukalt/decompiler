@@ -14,7 +14,7 @@ public class Bootstrap {
     public static void main(String[] args)  {
         try {
             AbstractStructure.init();
-            Decompiler.decompile(new File("Aufzug.class"), new FileOutputStream("Aufzug.java"));
+            Decompiler.decompile(new File("Test.class"), new FileOutputStream("Test.java"));
         } catch(Throwable t) {
             t.printStackTrace();
         }

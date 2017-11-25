@@ -1,6 +1,7 @@
-package me.lukas81298.decompiler;
+package me.lukas81298.decompiler.util;
 
 import lombok.RequiredArgsConstructor;
+import me.lukas81298.decompiler.exception.DecompileException;
 
 import java.util.LinkedList;
 
@@ -39,5 +40,9 @@ public class Parser {
 
     public void add(String s) {
         this.lines.add(s);
+    }
+
+    public int available() {
+        return this.lines.size();
     }
 }

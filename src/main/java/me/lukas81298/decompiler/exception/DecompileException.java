@@ -1,4 +1,4 @@
-package me.lukas81298.decompiler;
+package me.lukas81298.decompiler.exception;
 
 /**
  * @author lukas

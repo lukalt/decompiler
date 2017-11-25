@@ -1,8 +1,8 @@
 package me.lukas81298.decompiler.structure;
 
-import me.lukas81298.decompiler.DecompileException;
-import me.lukas81298.decompiler.IndentedPrintWriter;
-import me.lukas81298.decompiler.Parser;
+import me.lukas81298.decompiler.exception.DecompileException;
+import me.lukas81298.decompiler.util.IndentedPrintWriter;
+import me.lukas81298.decompiler.util.Parser;
 import me.lukas81298.decompiler.data.Modifiers;
 
 import java.util.ArrayList;
@@ -28,17 +28,18 @@ public class ClassStructure extends AbstractStructure {
             }
 
             if(!firstLine.endsWith(";")) {
-                throw new DecompileException(firstLine + " did not end with a simicolon");
+                throw new DecompileException(firstLine + " did not end with a simicolon " + parser.available());
             }
 
-            if(!firstLine.endsWith(");")) { // probably field
-                out.println(firstLine, level);
-            } else if(firstLine.endsWith("{};")) { // static "constructor"
+            if(firstLine.equals("static {};")) { // static "constructor"
+                out.println("static {", level);
                 StaticConstructorStructure constructorStructure = getStructure(StructureType.STATIC_CONSTRUCTOR);
                 constructorStructure.parse(out, parser, level + 1);
                 out.println("}\n", level);
+            } else if(!firstLine.endsWith(");")) { // probably field
+                out.println(firstLine, level);
             } else { // constructor or method
-                String[] split = firstLine.split("\\(\\)")[0].split(" ");
+                String[] split = firstLine.split("\\(")[0].split(" ");
                 int index = 0;
                 List<String> modifiers = new ArrayList<>();
                 for(String s : split) {
@@ -49,11 +50,21 @@ public class ClassStructure extends AbstractStructure {
                         break;
                     }
                 }
-
-
-                if(index == split.length - 1) {
+                if((split.length - index) <= 1) {
                     // constructor
-                    out.println(firstLine, level);
+                    List<String> args = new ArrayList<>();
+                    String[] argSplit = firstLine.split("\\(");
+                    String[] nameSplit = argSplit[0].split(" ");
+                    String className = nameSplit[nameSplit.length - 1];
+                    if(argSplit.length > 1) {
+                        String argLine = argSplit[1].replace(");", "");
+                        int counter = 0;
+                        for(String s : argLine.split(", ")) {
+                            args.add(s + " c_" + s + "_" + counter);
+                            counter++;
+                        }
+                    }
+                    out.println(String.join(" ", modifiers) + " " + className + "(" + String.join(", ", args) + "){", level);
                     ConstructorStructure constructorStructure = getStructure(StructureType.CONSTRUCTOR);
                     constructorStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
@@ -70,7 +81,7 @@ public class ClassStructure extends AbstractStructure {
                             counter++;
                         }
                     }
-                    out.println(String.join(" ", modifiers) + " " + type + " " + name + " (" + String.join(", ", types) + "){" , level);
+                    out.println(String.join(" ", modifiers) + " " + type + " " + name + "(" + String.join(", ", types) + "){", level);
                     MethodStructure methodStructure = getStructure(StructureType.METHOD);
                     methodStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
