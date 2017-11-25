@@ -6,6 +6,7 @@ import me.lukas81298.decompiler.util.Parser;
 import me.lukas81298.decompiler.data.Modifiers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,7 +24,6 @@ public class ClassStructure extends AbstractStructure {
             }
 
             if(firstLine.equals("}")) {
-                out.println("}\n", level);
                 return; // end of class
             }
 
@@ -39,7 +39,9 @@ public class ClassStructure extends AbstractStructure {
             } else if(!firstLine.endsWith(");")) { // probably field
                 out.println(firstLine, level);
             } else { // constructor or method
-                String[] split = firstLine.split("\\(")[0].split(" ");
+                String[] globalSplit = firstLine.split("\\(");
+                String s1 = globalSplit[0];
+                String[] split = s1.split(" ");
                 int index = 0;
                 List<String> modifiers = new ArrayList<>();
                 for(String s : split) {
@@ -52,34 +54,31 @@ public class ClassStructure extends AbstractStructure {
                 }
                 if((split.length - index) <= 1) {
                     // constructor
-                    List<String> args = new ArrayList<>();
-                    String[] argSplit = firstLine.split("\\(");
-                    String[] nameSplit = argSplit[0].split(" ");
-                    String className = nameSplit[nameSplit.length - 1];
-                    if(argSplit.length > 1) {
-                        String argLine = argSplit[1].replace(");", "");
-                        int counter = 0;
-                        for(String s : argLine.split(", ")) {
-                            args.add(s + " c_" + s + "_" + counter);
-                            counter++;
+                    // method declaration
+                    String name = split[index];
+                    List<String> types = new ArrayList<>();
+                    int counter = 0;
+                    for(String s : globalSplit[1].replace(");", "").split(", ")) {
+                        if(s.isEmpty() || s.equals(" ")) {
+                            continue;
                         }
+                        types.add(s + " param" + counter);
+                        counter++;
                     }
-                    out.println(String.join(" ", modifiers) + " " + className + "(" + String.join(", ", args) + "){", level);
-                    ConstructorStructure constructorStructure = getStructure(StructureType.CONSTRUCTOR);
-                    constructorStructure.parse(out, parser, level + 1);
+                    out.println(String.join(" ", modifiers) + " " + name + "(" + String.join(", ", types) + "){", level);
+                    MethodStructure methodStructure = getStructure(StructureType.METHOD);
+                    methodStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
                 } else {
                     // method declaration
                     String type = split[index];
-                    String[] rawName = split[index + 1].split("\\(");
-                    String name = rawName[0];
+                    String name = split[index + 1];
                     List<String> types = new ArrayList<>();
                     int counter = 0;
-                    if(rawName.length > 1) {
-                        for(String s : rawName[1].replace(");", "").split(", ")) {
-                            types.add(s + " p_" + s + "_" + counter);
-                            counter++;
-                        }
+
+                    for(String s : globalSplit[1].replace(");", "").split(", ")) {
+                        types.add(s + " param" + counter);
+                        counter++;
                     }
                     out.println(String.join(" ", modifiers) + " " + type + " " + name + "(" + String.join(", ", types) + "){", level);
                     MethodStructure methodStructure = getStructure(StructureType.METHOD);

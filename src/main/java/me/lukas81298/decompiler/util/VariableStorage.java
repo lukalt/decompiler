@@ -6,12 +6,18 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * @author lukas
  * @since 25.11.2017
  */
 public class VariableStorage {
+
+    @Getter
+    private final static PrimitiveType[] primitiveTypes = new PrimitiveType[]{
+            PrimitiveType.INT, PrimitiveType.DOUBLE, PrimitiveType.FLOAT, PrimitiveType.BYTE, PrimitiveType.LONG
+    };
 
     private final TIntObjectMap<Variable> variables = new TIntObjectHashMap<>();
 
@@ -38,6 +44,7 @@ public class VariableStorage {
     @RequiredArgsConstructor
     @Getter
     public static final class Variable {
+
         private final Object value;
         private final PrimitiveType type;
         private final String variableName;
@@ -60,33 +67,25 @@ public class VariableStorage {
     @RequiredArgsConstructor
     @Getter
     public enum PrimitiveType {
-        INT("int"),
-        DOUBLE("double"),
-        FLOAT("float"),
-        LONG("lomg"),
-        BYTE("byte"),
-        OBJECT("Object"); // ik this is not a primitive :D
+        INT("int", "i", s -> {
+            return Integer.parseInt(s);
+        }),
+        DOUBLE("double", "d", s-> {
+            return Double.parseDouble(s);
+        }),
+        FLOAT("float", "f", s-> {
+            return Float.parseFloat(s);
+        }),
+        LONG("long", "l", l-> {
+            return Long.parseLong(l);
+        }),
+        BYTE("byte", "b", b-> {
+            return Byte.parseByte(b);
+        }),
+        OBJECT("Object", "a", s -> s); // ik this is not a primitive :D
 
         private final String label;
-
-        public static PrimitiveType byTag(String s) {
-            if(s.isEmpty()) {
-                return OBJECT;
-            }
-            switch(s.charAt(0)) {
-                case 'l':
-                    return LONG;
-                case 'i':
-                    return INT;
-                case 'd':
-                    return DOUBLE;
-                case 'f':
-                    return FLOAT;
-                case 'b':
-                    return BYTE;
-
-            }
-            return OBJECT; // fallback
-        }
+        private final String prefix;
+        private final Function<String, Object> parse;
     }
 }
