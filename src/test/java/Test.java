@@ -4,6 +4,10 @@
  */
 public class Test {
 
+    private static int a = 0;
+
+    private int k;
+
     public static void main(String[] args) {
 
         int i = 118;
@@ -22,7 +26,17 @@ public class Test {
 
         System.out.println(e);
 
-        System.exit(e);
+        a = d;
+
+        Test test = new Test();
+        test.k = j;
+
+        int m = test.k;
+        if(m < i) {
+            System.exit(e);
+        }
+        System.exit(f);
+
     }
 
 }

@@ -17,9 +17,6 @@ public abstract class AbstractStructure {
     public static void init() {
         structures.put(StructureType.CLASS, new ClassStructure());
         structures.put(StructureType.FILE, new FileStructure());
-        structures.put(StructureType.METHOD, new MethodStructure());
-        structures.put(StructureType.CONSTRUCTOR, new ConstructorStructure());
-        structures.put(StructureType.STATIC_CONSTRUCTOR, new StaticConstructorStructure());
     }
 
     @SuppressWarnings("unchecked")

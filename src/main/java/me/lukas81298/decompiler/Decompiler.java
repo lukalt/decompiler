@@ -1,6 +1,5 @@
 package me.lukas81298.decompiler;
 
-import me.lukas81298.decompiler.exception.DecompileException;
 import me.lukas81298.decompiler.structure.AbstractStructure;
 import me.lukas81298.decompiler.structure.StructureType;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
@@ -37,7 +36,8 @@ public class Decompiler {
             Parser parser = new Parser(lines);
             try {
                 AbstractStructure.getStructure(StructureType.FILE).parse(writer, parser, 0);
-            } catch(DecompileException e) {
+            } catch(Exception e) {
+                System.out.println(parser.available());
                 writer.println("// Error: " + e.toString());
                 e.printStackTrace();
             }

@@ -1,7 +1,10 @@
 /*
-  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 00:36:00 CET 2017
+  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 01:31:20 CET 2017
 */
 public class Test {
+
+    private static int a;
+    private int k;
 
     public Test(){
         super();
@@ -20,7 +23,16 @@ public class Test {
         local3 = (local7 % local3);
         local4 = (local3 * local4);
         java.lang.System.out.println(local4);
-        java.lang.System.exit(local4);
+        a = local3;
+        Object local10 = new Test();
+        local10.k = local2;
+        Object local11 = local10.k;
+        java.lang.System.exit(local11, local1, local4);
+        java.lang.System.exit(local7);
+    }
+
+    static {
+        a = 0;
         return;
     }
 

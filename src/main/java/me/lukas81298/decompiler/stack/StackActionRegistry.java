@@ -52,6 +52,9 @@ public class StackActionRegistry {
         this.register(InvokeInterfaceAction.class, "invokeinterface");
 
         this.register(GetStaticAction.class, "getstatic");
+        this.register(GetFieldAction.class, "getfield");
+        this.register(PutStaticAction.class, "putstatic");
+        this.register(PutFieldAction.class, "putfield");
 
         this.register(DupAction.class, "dup"); // duplicate head of stack
         this.register(NewAction.class, "new");

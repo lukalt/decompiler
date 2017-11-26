@@ -1,6 +1,7 @@
 package me.lukas81298.decompiler.structure;
 
 import me.lukas81298.decompiler.exception.DecompileException;
+import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.Parser;
 
@@ -9,6 +10,10 @@ import me.lukas81298.decompiler.util.Parser;
  * @since 25.11.2017
  */
 public class StaticConstructorStructure extends BlockStructure {
+
+    public StaticConstructorStructure(Block block) {
+        super(block);
+    }
 
     @Override
     public void parse(IndentedPrintWriter out, Parser parser, int level) throws DecompileException {

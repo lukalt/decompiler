@@ -1,6 +1,7 @@
 package me.lukas81298.decompiler.stack;
 
 import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
@@ -19,10 +20,14 @@ import java.util.List;
 public class Block {
 
     private final int level;
-    private final VariableStorage variables = new VariableStorage();
+    private final VariableStorage variables;
     private final IndentedPrintWriter writer;
     private final List<VariableStorage.Variable> operandStack = new ArrayList<>();
     private final TIntSet definedVariables;
     private final Parser parser;
+
+    public static Block newBlock(int level, IndentedPrintWriter writer, Parser parser) {
+        return new Block(level, new VariableStorage(), writer, new TIntHashSet(), parser);
+    }
 
 }

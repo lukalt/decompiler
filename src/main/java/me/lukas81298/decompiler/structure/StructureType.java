@@ -10,5 +10,6 @@ public enum StructureType {
     METHOD,
     INTERFACE,
     CONSTRUCTOR,
+    IF,
     STATIC_CONSTRUCTOR
 }

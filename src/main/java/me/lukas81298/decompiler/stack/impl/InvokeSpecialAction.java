@@ -3,6 +3,7 @@ package me.lukas81298.decompiler.stack.impl;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.VariableStorage;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class InvokeSpecialAction implements StackAction {
     public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
         VariableStorage.Variable object = block.getOperandStack().get(0);
         VariableStorage.Variable typeTag = block.getOperandStack().remove(0);
-        if(typeTag.getRefId().contains(".")) {
+        if(typeTag.getRefId().contains(".") || !comment.contains("java/lang")) {
             block.getOperandStack().remove(0);
 
             String s = "new " + typeTag.getRefId() + "(" + String.join(", ", block.getOperandStack().stream().map(v -> {

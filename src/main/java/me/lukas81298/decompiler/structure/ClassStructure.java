@@ -1,6 +1,7 @@
 package me.lukas81298.decompiler.structure;
 
 import me.lukas81298.decompiler.exception.DecompileException;
+import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.Parser;
 import me.lukas81298.decompiler.data.Modifiers;
@@ -17,6 +18,7 @@ public class ClassStructure extends AbstractStructure {
 
     @Override
     public void parse(IndentedPrintWriter out, Parser parser, int level) throws DecompileException {
+        boolean firstMethod = true;
         do {
             String firstLine = parser.getAndRemove();
             if(firstLine.isEmpty()) {
@@ -32,13 +34,21 @@ public class ClassStructure extends AbstractStructure {
             }
 
             if(firstLine.equals("static {};")) { // static "constructor"
+                if(firstMethod) {
+                    firstMethod = false;
+                    out.println();
+                }
                 out.println("static {", level);
-                StaticConstructorStructure constructorStructure = getStructure(StructureType.STATIC_CONSTRUCTOR);
+                StaticConstructorStructure constructorStructure = new StaticConstructorStructure(Block.newBlock(level, out, parser));
                 constructorStructure.parse(out, parser, level + 1);
                 out.println("}\n", level);
             } else if(!firstLine.endsWith(");")) { // probably field
                 out.println(firstLine, level);
             } else { // constructor or method
+                if(firstMethod) {
+                    firstMethod = false;
+                    out.println();
+                }
                 String[] globalSplit = firstLine.split("\\(");
                 String s1 = globalSplit[0];
                 String[] split = s1.split(" ");
@@ -66,8 +76,8 @@ public class ClassStructure extends AbstractStructure {
                         counter++;
                     }
                     out.println(String.join(" ", modifiers) + " " + name + "(" + String.join(", ", types) + "){", level);
-                    MethodStructure methodStructure = getStructure(StructureType.METHOD);
-                    methodStructure.parse(out, parser, level + 1);
+                    ConstructorStructure constructorStructure = new ConstructorStructure(Block.newBlock(level, out, parser));
+                    constructorStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
                 } else {
                     // method declaration
@@ -81,7 +91,7 @@ public class ClassStructure extends AbstractStructure {
                         counter++;
                     }
                     out.println(String.join(" ", modifiers) + " " + type + " " + name + "(" + String.join(", ", types) + "){", level);
-                    MethodStructure methodStructure = getStructure(StructureType.METHOD);
+                    MethodStructure methodStructure = new MethodStructure(Block.newBlock(level, out, parser));
                     methodStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
                 }
