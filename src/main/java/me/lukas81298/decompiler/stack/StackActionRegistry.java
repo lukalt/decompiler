@@ -36,6 +36,7 @@ public class StackActionRegistry {
         this.register(DivAction.class, "div", VariableStorage.getPrimitiveTypes());
         this.register(MulAction.class, "mul", VariableStorage.getPrimitiveTypes());
         this.register(RemAction.class, "rem", VariableStorage.getPrimitiveTypes()); // mod
+        this.register(NegAction.class, "neg", VariableStorage.getPrimitiveTypes()); // multiply with -1
 
         // constant pushing
         this.register(BiPushAction.class, "bipush"); // add const byte
@@ -46,6 +47,8 @@ public class StackActionRegistry {
         this.register(Ldc2WAction.class, "ldc2_w"); // ldc for double precision
         this.register(ConstAction.class, "const", VariableStorage.getPrimitiveTypes());
         this.register(AConstNullAction.class, "aconst_null");
+        this.register(IIncAction.class, "iinc");
+        this.register(InstanceOfAction.class, "instanceof");
 
         // method invocation
         this.register(InvokeSpecialAction.class, "invokespecial");
@@ -61,6 +64,7 @@ public class StackActionRegistry {
         this.register(DupAction.class, "dup"); // duplicate head of stack
         this.register(SwapAction.class, "swap");
         this.register(NopAction.class, "nop");
+        this.register(WideAction.class, "wide");
 
         this.register(NewAction.class, "new");
 
@@ -81,7 +85,7 @@ public class StackActionRegistry {
         this.register(ReturnAction.class, "return", VariableStorage.getPrimitiveTypesAndObject());
         this.register(new AbstractIfAction("{0} < 0"), "iflt");
         this.register(new AbstractIfAction("{0} > 0"), "ifgt");
-        this.register(new AbstractIfAction("{0} == 0"), "ifeg");
+        this.register(new AbstractIfAction("{0} == 0"), "ifeq");
         this.register(new AbstractIfAction("{0} >= 0"), "ifge");
         this.register(new AbstractIfAction("{0} <= 0"), "ifle");
         this.register(new AbstractIfAction("{0} != 0"), "ifne");
