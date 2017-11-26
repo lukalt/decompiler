@@ -19,6 +19,9 @@ public class Ldc2WAction implements StackAction {
             }
             block.getOperandStack().add(new VariableStorage.Variable(Long.parseLong(split[1]), VariableStorage.PrimitiveType.LONG));
         } else {
+            if(split[1].endsWith("d")) {
+                split[1] = split[1].substring(0, split[1].length() - 1);
+            }
             block.getOperandStack().add(new VariableStorage.Variable(Double.parseDouble(split[1]), VariableStorage.PrimitiveType.DOUBLE));
         }
         return true;

@@ -12,7 +12,7 @@ public class SiPushAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
-        block.getOperandStack().add(new VariableStorage.Variable(Integer.parseInt(arg), VariableStorage.PrimitiveType.INT));
+        block.getOperandStack().add(new VariableStorage.Variable(Integer.parseInt(arg), VariableStorage.PrimitiveType.SHORT));
         return true;
     }
 }

@@ -15,11 +15,8 @@ public class NewAction implements StackAction {
         String[] split = comment.split(" ");
         switch(split[0]) {
             case "class":
-                block.getOperandStack().clear();
                 block.getOperandStack().add(new VariableStorage.Variable(split[1].replace("/","."), VariableStorage.PrimitiveType.OBJECT));
                 break;
-
-                // todo handle other cases ?!
         }
         return true;
     }

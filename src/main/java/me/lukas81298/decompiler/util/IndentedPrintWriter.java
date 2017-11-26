@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class IndentedPrintWriter extends PrintWriter {
 
-    private final String INDENTION_SEQUENCE = "    ";
+    private final static String INDENTION_SEQUENCE = "    ";
 
     public IndentedPrintWriter(Writer out) {
         super(out);

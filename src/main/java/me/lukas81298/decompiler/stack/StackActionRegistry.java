@@ -59,10 +59,15 @@ public class StackActionRegistry {
         this.register(DupAction.class, "dup"); // duplicate head of stack
         this.register(NewAction.class, "new");
 
+        // array
+        this.register(ArrayLengthAction.class, "arraylength");
+        this.register(AStoreAction.class, "astore", VariableStorage.getPrimitiveTypesAndObject());
+        this.register(NewArrayAction.class, "newarray");
+        this.register(ANewArrayAction.class, "anewarray"); // same as before but for object arrays
+        this.register(ArrayElementLoadAction.class, "aload", VariableStorage.getPrimitiveTypesAndObject());
         // control structures
-        this.register(ReturnAction.class, "return");
-
-
+        this.register(ReturnVoidAction.class, "return");
+        this.register(ReturnAction.class, "return", VariableStorage.getPrimitiveTypesAndObject());
     }
 
     public boolean invoke(Block block, String line) {

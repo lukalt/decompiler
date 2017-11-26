@@ -31,6 +31,15 @@ public class InvokeSpecialAction implements StackAction {
             }).collect(Collectors.toList())) + ");", block.getLevel());
             block.getOperandStack().clear();
         }
+
+        /*
+         List<String> args = new ArrayList<>();
+                if(!split[1].contains(":()")) {
+                    for(int i = 0; i < StringUtils.countMatches(split[1], ",") + 1; i++) {
+                        args.add(block.getOperandStack().remove(0).getRefId());
+                    }
+                }
+         */
         return true;
     }
 }

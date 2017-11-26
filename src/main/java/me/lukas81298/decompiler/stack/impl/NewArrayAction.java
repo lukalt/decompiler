@@ -6,14 +6,13 @@ import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
  * @author lukas
- * @since 25.11.2017
+ * @since 26.11.2017
  */
-public class SubAction implements StackAction {
+public class NewArrayAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
-        VariableStorage.Variable first = block.getOperandStack().remove(0), second = block.getOperandStack().remove(0);
-        block.getOperandStack().add(new VariableStorage.Variable("(" + first.getRefId() + " - " + second.getRefId() + ")", type));
+        block.getOperandStack().add(new VariableStorage.Variable("new " + arg + "[" + block.getOperandStack().remove(0).getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 

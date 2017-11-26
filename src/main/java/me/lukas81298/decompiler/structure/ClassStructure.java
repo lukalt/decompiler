@@ -39,7 +39,7 @@ public class ClassStructure extends AbstractStructure {
                     out.println();
                 }
                 out.println("static {", level);
-                StaticConstructorStructure constructorStructure = new StaticConstructorStructure(Block.newBlock(level, out, parser));
+                StaticConstructorStructure constructorStructure = new StaticConstructorStructure(Block.newBlock(level + 1, out, parser));
                 constructorStructure.parse(out, parser, level + 1);
                 out.println("}\n", level);
             } else if(!firstLine.endsWith(");")) { // probably field
@@ -76,7 +76,7 @@ public class ClassStructure extends AbstractStructure {
                         counter++;
                     }
                     out.println(String.join(" ", modifiers) + " " + name + "(" + String.join(", ", types) + "){", level);
-                    ConstructorStructure constructorStructure = new ConstructorStructure(Block.newBlock(level, out, parser));
+                    ConstructorStructure constructorStructure = new ConstructorStructure(Block.newBlock(level + 1, out, parser));
                     constructorStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
                 } else {
@@ -91,7 +91,7 @@ public class ClassStructure extends AbstractStructure {
                         counter++;
                     }
                     out.println(String.join(" ", modifiers) + " " + type + " " + name + "(" + String.join(", ", types) + "){", level);
-                    MethodStructure methodStructure = new MethodStructure(Block.newBlock(level, out, parser));
+                    MethodStructure methodStructure = new MethodStructure(Block.newBlock(level + 1, out, parser));
                     methodStructure.parse(out, parser, level + 1);
                     out.println("}\n", level);
                 }

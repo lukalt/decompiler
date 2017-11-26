@@ -37,6 +37,17 @@ public class Test {
         }
         System.exit(f);
 
+        int[] array = new int[2];
+        array[0] = 1;
+        array[1] = d;
+
+        j = array[0];
+        int length = array.length;
+
+        byte[] array2 = new byte[] { 1, 2, 3 };
+        Object[] objectArray = new Object[4];
+
+
     }
 
 }

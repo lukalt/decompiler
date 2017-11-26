@@ -72,21 +72,12 @@ public class VariableStorage {
     @RequiredArgsConstructor
     @Getter
     public enum PrimitiveType {
-        INT("int", "i", s -> {
-            return Integer.parseInt(s);
-        }),
-        DOUBLE("double", "d", s -> {
-            return Double.parseDouble(s);
-        }),
-        FLOAT("float", "f", s -> {
-            return Float.parseFloat(s);
-        }),
-        LONG("long", "l", l -> {
-            return Long.parseLong(l);
-        }),
-        BYTE("byte", "b", b -> {
-            return Byte.parseByte(b);
-        }),
+        INT("int", "i", s -> Integer.parseInt(s)),
+        DOUBLE("double", "d", s -> Double.parseDouble(s)),
+        FLOAT("float", "f", s -> Float.parseFloat(s)),
+        LONG("long", "l", l -> Long.parseLong(l)),
+        BYTE("byte", "b", b -> Byte.parseByte(b)),
+        SHORT("short", "s", s -> Short.parseShort(s)),
         OBJECT("Object", "a", s -> s),
         NULL("null", "", s -> s),
         EXPRESSION("Object", "", s -> s); // ik this is not a primitive :D
