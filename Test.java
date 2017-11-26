@@ -1,5 +1,5 @@
 /*
-  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 15:49:39 CET 2017
+  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 16:33:51 CET 2017
 */
 public class Test {
 
@@ -27,8 +27,10 @@ public class Test {
         Object local10 = new Test();
         local10.k = local2;
         Object local11 = local10.k;
-        java.lang.System.exit(local11, local1, local4);
-        java.lang.System.exit(local7);
+        if (local11 < local1) {
+            java.lang.System.exit(local4);
+        }
+        java.lang.System.exit();
         Object local12 = new int[2];
         local12[0] = 1;
         local12[1] = local3;

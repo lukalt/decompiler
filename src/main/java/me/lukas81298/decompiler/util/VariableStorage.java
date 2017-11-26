@@ -79,6 +79,7 @@ public class VariableStorage {
         BYTE("byte", "b", b -> Byte.parseByte(b)),
         SHORT("short", "s", s -> Short.parseShort(s)),
         OBJECT("Object", "a", s -> s),
+        CHAR("char", "c", c -> c + ""),
         NULL("null", "", s -> s),
         EXPRESSION("Object", "", s -> s); // ik this is not a primitive :D
 

@@ -1,8 +1,10 @@
 package me.lukas81298.decompiler.stack;
 
+import com.sun.org.apache.bcel.internal.generic.IFLT;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.stack.impl.*;
 import me.lukas81298.decompiler.util.VariableStorage;
+import sun.util.locale.provider.LocaleServiceProviderPool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +59,15 @@ public class StackActionRegistry {
         this.register(PutFieldAction.class, "putfield");
 
         this.register(DupAction.class, "dup"); // duplicate head of stack
+        this.register(SwapAction.class, "swap");
+        this.register(NopAction.class, "nop");
+
         this.register(NewAction.class, "new");
+
+        this.register(true, PrimitiveCastAction.class,"f2", VariableStorage.PrimitiveType.INT, VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.LONG);
+        this.register(true, PrimitiveCastAction.class, "d2", VariableStorage.PrimitiveType.FLOAT, VariableStorage.PrimitiveType.INT, VariableStorage.PrimitiveType.LONG);
+        this.register(true, PrimitiveCastAction.class, "i2", VariableStorage.PrimitiveType.BYTE, VariableStorage.PrimitiveType.CHAR, VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.FLOAT, VariableStorage.PrimitiveType.LONG, VariableStorage.PrimitiveType.SHORT);
+        this.register(true, PrimitiveCastAction.class, "l2", VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.FLOAT, VariableStorage.PrimitiveType.INT);
 
         // array
         this.register(ArrayLengthAction.class, "arraylength");
@@ -65,17 +75,37 @@ public class StackActionRegistry {
         this.register(NewArrayAction.class, "newarray");
         this.register(ANewArrayAction.class, "anewarray"); // same as before but for object arrays
         this.register(ArrayElementLoadAction.class, "aload", VariableStorage.getPrimitiveTypesAndObject());
+
         // control structures
         this.register(ReturnVoidAction.class, "return");
         this.register(ReturnAction.class, "return", VariableStorage.getPrimitiveTypesAndObject());
+        this.register(new AbstractIfAction("{0} < 0"), "iflt");
+        this.register(new AbstractIfAction("{0} > 0"), "ifgt");
+        this.register(new AbstractIfAction("{0} == 0"), "ifeg");
+        this.register(new AbstractIfAction("{0} >= 0"), "ifge");
+        this.register(new AbstractIfAction("{0} <= 0"), "ifle");
+        this.register(new AbstractIfAction("{0} != 0"), "ifne");
+        this.register(new AbstractIfAction("{0} != null"), "ifnonnull");
+        this.register(new AbstractIfAction("{0} == null"), "ifnull");
+        this.register(new BiAbstractIfAction("{0} == {1}" ), "if_acmpeq");
+        this.register(new BiAbstractIfAction("{0} != {1}" ), "if_acmpne");
+        this.register(new BiAbstractIfAction("{0} == {1}" ), "if_icmpeq");
+        this.register(new BiAbstractIfAction("{0} < {1}" ), "if_icmpge");
+        this.register(new BiAbstractIfAction("{0} <= {1}" ), "if_icmpgt");
+        this.register(new BiAbstractIfAction("{0} >= {1}" ), "if_icmple");
+        this.register(new BiAbstractIfAction("{0} > {1}" ), "if_icmplt");
+
     }
 
-    public boolean invoke(Block block, String line) {
+    public boolean invoke(Block block, String line, int endAt) {
         String[] firstSplit = line.split("//");
         String comment = firstSplit.length > 1 ? firstSplit[1].trim() : "";
         String firstPart = firstSplit[0];
         String[] subSplit = firstPart.split(":");
-        int lineNumber = Integer.parseInt(subSplit[0].trim());
+        int index = Integer.parseInt(subSplit[0].trim());
+        if(endAt == index) {
+            return false;
+        }
         String rawAction = subSplit[1].trim();
         String[] actionParts = rawAction.split(" +");
         String action = actionParts[0];
@@ -83,13 +113,13 @@ public class StackActionRegistry {
 
         Entity entity = this.actionMap.get(action);
         if(entity != null) {
-            return entity.action.handle(entity.type, arg, comment, lineNumber, block);
+            return entity.action.handle(entity.type, arg, comment, index, block);
         }
         if(action.contains("_")) {
             String[] split = action.split("_");
             entity = this.actionMap.get(split[0]);
             if(entity != null) {
-                return entity.action.handle(entity.type, split[1], comment, lineNumber, block);
+                return entity.action.handle(entity.type, split[1], comment, index, block);
             }
         }
         System.out.println("Invalid action " + action + ":" + arg);
@@ -97,18 +127,27 @@ public class StackActionRegistry {
     }
 
     private void register(Class<? extends StackAction> clazz, String tag, VariableStorage.PrimitiveType... types) {
+        register(false, clazz, tag, types);
+    }
+
+
+    private void register(boolean reverse, Class<? extends StackAction> clazz, String tag, VariableStorage.PrimitiveType... types) {
         try {
             StackAction action = clazz.newInstance();
             if(types.length == 0) {
                 this.actionMap.put(tag, new Entity(action, null));
             } else {
                 for(VariableStorage.PrimitiveType type : types) {
-                    this.actionMap.put(type.getPrefix() + tag, new Entity(action, type));
+                    this.actionMap.put(reverse ? (tag + type.getPrefix()) : (type.getPrefix() + tag), new Entity(action, type));
                 }
             }
         } catch(InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private void register(StackAction action, String tag) {
+        this.actionMap.put(tag, new Entity(action,null));
     }
 
 }

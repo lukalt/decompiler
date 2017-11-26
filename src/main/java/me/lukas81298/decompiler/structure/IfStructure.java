@@ -8,11 +8,8 @@ import me.lukas81298.decompiler.stack.Block;
  */
 public class IfStructure extends BlockStructure {
 
-    private final int endOfBlock;
-
     public IfStructure(Block block, int endOfBlock) {
-        super(block);
-        this.endOfBlock = endOfBlock;
+        super(block, endOfBlock, false);
     }
 
     @Override
