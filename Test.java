@@ -1,5 +1,5 @@
 /*
-  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 17:39:10 CET 2017
+  G:\projects\decompiler\Test.class decompiled at Sun Nov 26 23:40:07 CET 2017
 */
 public class Test {
 
@@ -41,12 +41,7 @@ public class Test {
         2[2] = 2;
         int local14 = 3;
         Object local15 = new java.lang.Object[4];
-    }
-
-    static {
-        a = 0;
-        return;
-    }
-
-}
-
+        if (local3 < local4) {
+            local3++;
+        }
+// Error: java.lang.NumberFormatException: For input string: "static {};"

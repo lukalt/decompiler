@@ -47,6 +47,9 @@ public class Test {
 
         byte[] array2 = new byte[] { 1, 2, 3 };
         Object[] objectArray = new Object[4];
+        while(d < e) {
+            d++;
+        }
 
 
     }

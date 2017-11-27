@@ -37,7 +37,6 @@ public class Decompiler {
             try {
                 AbstractStructure.getStructure(StructureType.FILE).parse(writer, parser, 0);
             } catch(Exception e) {
-                System.out.println(parser.available());
                 writer.println("// Error: " + e.toString());
                 e.printStackTrace();
             }

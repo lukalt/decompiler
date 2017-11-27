@@ -98,6 +98,9 @@ public class StackActionRegistry {
         this.register(new BiAbstractIfAction("{0} <= {1}" ), "if_icmpgt");
         this.register(new BiAbstractIfAction("{0} >= {1}" ), "if_icmple");
         this.register(new BiAbstractIfAction("{0} > {1}" ), "if_icmplt");
+        this.register(ThrowAction.class, "throw");
+        this.register(GoToAction.class, "goto");
+        this.register(GoToAction.class, "goto_w");
 
     }
 
@@ -111,6 +114,9 @@ public class StackActionRegistry {
             return false;
         }
         String rawAction = subSplit[1].trim();
+        if(rawAction.startsWith("iinc")) {
+            rawAction = rawAction.replace(", ",","); // todo find better solution
+        }
         String[] actionParts = rawAction.split(" +");
         String action = actionParts[0];
         String arg = actionParts.length == 1 ? "" : actionParts[1];

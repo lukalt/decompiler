@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.exception.DecompileException;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author lukas
@@ -32,6 +33,10 @@ public class Parser {
         String first = this.lines.getFirst().trim();
         this.lines.removeFirst();
         return first;
+    }
+
+    public List<String> remainingLines() {
+        return new LinkedList<>(this.lines);
     }
 
     public void removeHeader() {

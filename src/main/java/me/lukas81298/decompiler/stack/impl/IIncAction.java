@@ -12,11 +12,19 @@ public class IIncAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
-        String[] split = arg.split(" ");
+        String[] split = arg.split(",");
         int var = Integer.parseInt(split[0]);
         int mod = Integer.parseInt(split[1]);
         VariableStorage.Variable v = block.getVariables().get(var);
-        block.getVariables().set(var, ((Number)v.getValue()).intValue() + mod, v.getType(), v.getVariableName());
+        if(mod == 1) {
+            block.getWriter().println(v.getRefId() + "++;", block.getLevel());
+        } else if(mod == -1) {
+            block.getWriter().println(v.getRefId() + "--;", block.getLevel());
+        } else if(mod >= 0){
+            block.getWriter().println(v.getRefId() + " += " + mod + ";", block.getLevel());
+        } else {
+            block.getWriter().println(v.getRefId() + " -= " + (mod * -1) + ";", block.getLevel());
+        }
         return true;
     }
 }

@@ -8,16 +8,11 @@ import me.lukas81298.decompiler.util.VariableStorage;
  * @author lukas
  * @since 26.11.2017
  */
-public class GoToAction implements StackAction {
+public class ThrowAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
-        int target = Integer.parseInt(arg);
-        if(target > lineNumber) {
-            // some kind of else structure
-        } else {
-            // some kind of loop, probably while
-        }
+        block.getWriter().println(block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
         return true;
     }
 }
