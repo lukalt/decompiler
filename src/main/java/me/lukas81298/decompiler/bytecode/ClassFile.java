@@ -4,7 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import me.lukas81298.decompiler.bytecode.constant.Constant;
+import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author lukas
@@ -18,11 +21,14 @@ public class ClassFile {
 
     private int magic;
     private int minorVersion, majorVersion;
-    private Constant[] constantPool;
-    private int accessFlags;
+    private ConstantPool constantPool;
+    private Set<ClassFlag> accessFlags = new HashSet<>();
 
     private String name;
     private String superClass;
 
     private String[] interfaces;
+    private FieldInfo[] fields;
+    private MethodInfo[] methods;
+    private AttributeInfo[] attributes;
 }

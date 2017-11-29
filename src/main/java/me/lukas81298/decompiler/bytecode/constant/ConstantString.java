@@ -2,6 +2,7 @@ package me.lukas81298.decompiler.bytecode.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.lukas81298.decompiler.bytecode.ConstantPool;
 
 /**
  * @author lukas
@@ -11,7 +12,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ConstantString implements Constant {
 
-    private final String value;
+    private final ConstantPool constantPool;
+    private final int value;
+
+    public String getValue() {
+        return this.constantPool.get(this.value, ConstantUtf8Info.class).getValue();
+    }
 
     @Override
     public ConstantType getType() {
@@ -20,6 +26,6 @@ public class ConstantString implements Constant {
 
     @Override
     public String toString() {
-        return this.value;
+        return this.getValue();
     }
 }

@@ -2,6 +2,7 @@ package me.lukas81298.decompiler.bytecode.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.lukas81298.decompiler.bytecode.ConstantPool;
 
 /**
  * @author lukas
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ConstantInvokeDynamicInfo implements Constant {
 
+    private final ConstantPool constantPool;
     private final int bootstrapMethodAttrIndex;
     private final int nameAndTypeIndex;
 

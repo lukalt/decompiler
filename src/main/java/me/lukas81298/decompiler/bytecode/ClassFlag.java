@@ -3,13 +3,16 @@ package me.lukas81298.decompiler.bytecode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author lukas
  * @since 27.11.2017
  */
 @Getter
 @RequiredArgsConstructor
-public enum AccessFlag {
+public enum ClassFlag {
 
     ACC_PUBLIC(0x0001),
     ACC_FINAL(0x0010),
@@ -21,4 +24,14 @@ public enum AccessFlag {
     ACC_ENUM(0x4000);
 
     private final int value;
+
+    public static Set<ClassFlag> fromBitMask(int bitMask) {
+        Set<ClassFlag> set = new HashSet<>();
+        for(ClassFlag classFlag : values()) {
+            if((bitMask & classFlag.getValue()) == classFlag.getValue()) {
+                set.add(classFlag);
+            }
+        }
+        return set;
+    }
 }
