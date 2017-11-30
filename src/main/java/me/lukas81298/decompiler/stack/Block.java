@@ -7,9 +7,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
+import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
 import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
-import me.lukas81298.decompiler.util.Parser;
+import me.lukas81298.decompiler.util.ProcessQueue;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 import java.util.ArrayList;
@@ -30,11 +31,13 @@ public class Block {
     private final TIntSet definedVariables;
     private final ConstantPool constantPool;
     private final TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables;
+    private final ProcessQueue<CodeAttribute.CodeItem> queue;
+
     @Setter
     private boolean superChecker = false;
 
-    public static Block newBlock(int level, IndentedPrintWriter writer, ConstantPool constantPool, TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables) {
-        return new Block(level, new VariableStorage(), writer, new TIntHashSet(), constantPool, localVariables);
+    public static Block newBlock(int level, IndentedPrintWriter writer, ConstantPool constantPool, ProcessQueue<CodeAttribute.CodeItem> queue, TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables) {
+        return new Block(level, new VariableStorage(), writer, new TIntHashSet(), constantPool, localVariables, queue);
     }
 
 }

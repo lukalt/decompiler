@@ -16,9 +16,11 @@ import me.lukas81298.decompiler.bytecode.atrr.impl.ExceptionsAttribute;
 import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
 import me.lukas81298.decompiler.stack.Block;
+import me.lukas81298.decompiler.stack.BlockProcessor;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.stack.StackActionRegistry;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
+import me.lukas81298.decompiler.util.ProcessQueue;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -125,13 +127,10 @@ public class MethodInfo {
     private void writeBody(IndentedPrintWriter output, int i, ConstantPool constantPool) {
         CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
         LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
-        Block block = Block.newBlock(i, output,  constantPool, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
-        StackActionRegistry stackActionRegistry = new StackActionRegistry();
-        int d = 0;
-        for(CodeAttribute.CodeItem codeItem : codeAttribute.getCode()) {
-            stackActionRegistry.invoke(block, codeItem.getId(), codeItem.getAdditionalData(), d);
-            d++;
-        }
+        ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode());
+        Block block = Block.newBlock(i, output,  constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
+        BlockProcessor blockProcessor = new BlockProcessor(block);
+        blockProcessor.processBlock();
     }
 
     public void write(IndentedPrintWriter output, int i, ConstantPool constantPool) {
