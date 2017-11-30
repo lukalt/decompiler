@@ -1,9 +1,11 @@
-package me.lukas81298.decompiler.bytecode;
+package me.lukas81298.decompiler.bytecode.method;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,13 +37,13 @@ public enum MethodFlag {
         this.name = null;
     }
 
-    public static Set<MethodFlag> fromBitMask(int bitMask) {
-        Set<MethodFlag> set = new HashSet<>();
+    public static List<MethodFlag> fromBitMask(int bitMask) {
+        List<MethodFlag> list = new ArrayList<>();
         for(MethodFlag classFlag : values()) {
             if((bitMask & classFlag.getValue()) == classFlag.getValue()) {
-                set.add(classFlag);
+                list.add(classFlag);
             }
         }
-        return set;
+        return list;
     }
 }

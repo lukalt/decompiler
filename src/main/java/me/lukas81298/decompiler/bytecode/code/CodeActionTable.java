@@ -225,8 +225,8 @@ public class CodeActionTable {
         register("nop", 0x00);
         register("pop", 0x57);
         register("pop2", 0x58);
-        register("putfield", 0xb5);
-        register("putstatic", 0xb3);
+        register("putfield", 0xb5, 2);
+        register("putstatic", 0xb3, 2);
         register("ret", 0xa9);
         register("return", 0xb1);
         register("saload", 0x35);

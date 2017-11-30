@@ -1,13 +1,14 @@
 package me.lukas81298.decompiler.bytecode.atrr;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.atrr.impl.*;
 import me.lukas81298.decompiler.bytecode.code.CodeActionTable;
 import me.lukas81298.decompiler.bytecode.constant.ConstantClassInfo;
-import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
+import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.util.BiFunctionException;
 
 import java.io.*;
@@ -30,8 +31,6 @@ public enum AttributeType {
     CODE("Code", (in,c) -> {
         int maxStack = in.readUnsignedShort();
         int maxLocals = in.readUnsignedShort();
-        System.out.println(maxStack);
-        System.out.println(maxLocals);
         byte[] code = new byte[in.readInt()];
         in.readFully(code);
         DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(code));
@@ -82,7 +81,7 @@ public enum AttributeType {
         return new SignatureAttribute(c.getString(in.readUnsignedShort()));
     }),
     SOURCE_FILE("SourceFile", (in,c) -> {
-        return new SourceFieldAttribute(c.getString(in.readUnsignedShort()));
+        return new SourceFileAttribute(c.getString(in.readUnsignedShort()));
     }),
     SOURCE_DEBUG_EXTENSION("SourceDebugExtension", null),
     LINE_NUMBER_TABLE("LineNumberTable", (in,c) -> {
@@ -92,7 +91,20 @@ public enum AttributeType {
         }
         return new LineNumberTableAttribute(e);
     }),
-    LOCAL_VARIABLE_TABLE("LocalVariableTable", null),
+    LOCAL_VARIABLE_TABLE("LocalVariableTable", (in,c) -> {
+        final TIntObjectMap<LocalVariableAttribute.LocalVariable> locals = new TIntObjectHashMap<>();
+        final int length = in.readUnsignedShort();
+        for(int i = 0; i < length; i++) {
+            LocalVariableAttribute.LocalVariable localVariable = new LocalVariableAttribute.LocalVariable();
+            localVariable.setStartPc(in.readUnsignedShort());
+            localVariable.setLength(in.readUnsignedShort());
+            localVariable.setName(c.get(in.readUnsignedShort()).toString());
+            localVariable.setDescriptor(MethodDescriptor.parseType(c.get(in.readUnsignedShort()).toString()));
+            localVariable.setIndex(in.readUnsignedShort());
+            locals.put(localVariable.getIndex(), localVariable);
+        }
+        return new LocalVariableAttribute(locals);
+    }),
     LOCAL_VARIABLE_TYPE_TABLE("LocalVariableTypeTable", null),
     DEPRECATED("Deprecated", null),
     RUNTIME_VISIBLE_ANNOTATIONS("RuntimeVisibleAnnotations", null),
@@ -115,7 +127,7 @@ public enum AttributeType {
     }
 
     private final String name;
-    private final BiFunctionException<DataInput, ConstantPool, AttributeData, IOException> applyFunction;
+    private final BiFunctionException<DataInputStream, ConstantPool, AttributeData, IOException> applyFunction;
 
 
 

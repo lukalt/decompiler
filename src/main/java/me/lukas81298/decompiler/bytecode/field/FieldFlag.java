@@ -1,9 +1,11 @@
-package me.lukas81298.decompiler.bytecode.constant;
+package me.lukas81298.decompiler.bytecode.field;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,13 +29,13 @@ public enum FieldFlag {
     private final int value;
     private final String name;
 
-    public static Set<FieldFlag> fromBitMask(int bitMask) {
-        Set<FieldFlag> set = new HashSet<>();
+    public static List<FieldFlag> fromBitMask(int bitMask) {
+        List<FieldFlag> list = new ArrayList<>();
         for(FieldFlag classFlag : values()) {
             if((bitMask & classFlag.getValue()) == classFlag.getValue()) {
-                set.add(classFlag);
+                list.add(classFlag);
             }
         }
-        return set;
+        return list;
     }
 }

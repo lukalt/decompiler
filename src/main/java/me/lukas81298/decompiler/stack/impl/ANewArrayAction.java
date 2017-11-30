@@ -1,7 +1,9 @@
 package me.lukas81298.decompiler.stack.impl;
 
+import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.Helpers;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -12,10 +14,7 @@ public class ANewArrayAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        /*String[] split = comment.split(" ");
-        if(split[0].equals("class")) {
-            block.getOperandStack().add(new VariableStorage.Variable("new " + split[1].replace("/", ".") + "[" + block.getOperandStack().remove(0).getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
-        }*/
+        block.getOperandStack().add(new VariableStorage.Variable("new " + MethodDescriptor.makeClassName(block.getConstantPool().get(Helpers.mergeFirst(data)).toString()) + "[" + block.getOperandStack().remove(0).getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 }

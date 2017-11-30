@@ -19,6 +19,7 @@ public class LdcAction implements StackAction {
         } else { // handle as int
             block.getOperandStack().add(new VariableStorage.Variable(Integer.parseInt(arg), VariableStorage.PrimitiveType.INT));
         }*/
+        block.getOperandStack().add(new VariableStorage.Variable(block.getConstantPool().get(data[0]).toString(), VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 }

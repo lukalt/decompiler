@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
+import me.lukas81298.decompiler.bytecode.field.FieldInfo;
+import me.lukas81298.decompiler.bytecode.method.MethodInfo;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -41,23 +43,23 @@ public class ClassFile {
         if(this.accessFlags.contains(ClassFlag.ACC_FINAL)) {
             stringBuilder.append("final ");
         } else if(this.accessFlags.contains(ClassFlag.ACC_ABSTRACT)) {
-            stringBuilder.append("abstract ");
+            stringBuilder.append("abstract");
         }
         if(this.accessFlags.contains(ClassFlag.ACC_INTERFACE)) {
-            stringBuilder.append("interface ");
+            stringBuilder.append("interface");
         } else if(this.accessFlags.contains(ClassFlag.ACC_ENUM)) {
             stringBuilder.append("enum ");
         } else if(this.accessFlags.contains(ClassFlag.ACC_ANNOTATION)) {
-            stringBuilder.append("@interface ");
+            stringBuilder.append("@interface");
         } else {
-            stringBuilder.append("class ");
+            stringBuilder.append("class");
         }
-        stringBuilder.append(name).append(" ");
-        if(superClass != null && this.accessFlags.contains(ClassFlag.ACC_SUPER)) {
-            stringBuilder.append("extends ").append(superClass.replace("/", "."));
+        stringBuilder.append(" ").append(this.name);
+        if(superClass != null && this.accessFlags.contains(ClassFlag.ACC_SUPER) && !this.superClass.equals("Object")) {
+            stringBuilder.append(" extends").append(this.superClass);
         }
         if(interfaces.length > 0) {
-            stringBuilder.append("implements ").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
+            stringBuilder.append(" implements").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
         }
         return stringBuilder.toString();
     }

@@ -45,4 +45,13 @@ public class CodeAttribute extends AttributeData {
         private final int startPointer,endPointer,handlerPointer;
         private final ConstantClassInfo catchType;
     }
+
+    public <K extends AttributeData> K getAttributeByType(AttributeType attributeType, Class<K> clazz) {
+        for(AttributeInfo attribute : this.attributes) {
+            if(attribute.getType() == attributeType) {
+                return clazz.cast(attribute.getData());
+            }
+        }
+        return null;
+    }
 }

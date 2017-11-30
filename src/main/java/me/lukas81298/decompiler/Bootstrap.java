@@ -22,7 +22,7 @@ public class Bootstrap {
 
         try {
             ClassFile classFile = ClassFileReader.read(new FileInputStream("Test.class"));
-            new Decompiler(classFile, System.out).decompile();
+            new Decompiler(classFile, System.out, classFile.getConstantPool()).decompile();
         } catch(IOException e) {
             e.printStackTrace();
         }

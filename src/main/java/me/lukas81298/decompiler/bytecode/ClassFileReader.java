@@ -4,6 +4,9 @@ import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.constant.Constant;
 import me.lukas81298.decompiler.bytecode.constant.ConstantClassInfo;
 import me.lukas81298.decompiler.bytecode.constant.ConstantType;
+import me.lukas81298.decompiler.bytecode.field.FieldInfo;
+import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
+import me.lukas81298.decompiler.bytecode.method.MethodInfo;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -32,9 +35,10 @@ public class ClassFileReader {
             }
         }
 
+        classFile.setConstantPool(constants);
         classFile.setAccessFlags(ClassFlag.fromBitMask(input.readUnsignedShort()));
-        classFile.setName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName().replace("/", "."));
-        classFile.setSuperClass(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName().replace("/", "."));
+        classFile.setName(MethodDescriptor.makeClassName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName()));
+        classFile.setSuperClass(MethodDescriptor.makeClassName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName()));
 
 
         classFile.setInterfaces(new String[input.readUnsignedShort()]);
@@ -49,7 +53,7 @@ public class ClassFileReader {
 
         classFile.setMethods(new MethodInfo[input.readUnsignedShort()]);
         for(int i = 0; i < classFile.getMethods().length; i++) {
-            classFile.getMethods()[i] = MethodInfo.read(constants, input);
+            classFile.getMethods()[i] = MethodInfo.read(constants, input, classFile);
         }
 
         classFile.setAttributes(new AttributeInfo[input.readUnsignedShort()]);

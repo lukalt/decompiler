@@ -4,6 +4,7 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -48,6 +49,7 @@ public class VariableStorage {
 
     @RequiredArgsConstructor
     @Getter
+    @ToString
     public static final class Variable {
 
         private final Object value;

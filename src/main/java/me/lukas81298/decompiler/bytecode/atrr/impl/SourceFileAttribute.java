@@ -15,7 +15,7 @@ import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class SourceFieldAttribute extends AttributeData {
+public class SourceFileAttribute extends AttributeData {
 
     private final String sourceFile;
 

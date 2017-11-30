@@ -1,7 +1,9 @@
 package me.lukas81298.decompiler.stack.impl;
 
+import me.lukas81298.decompiler.bytecode.constant.ConstantFieldRefInfo;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.Helpers;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -10,13 +12,11 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class PutStaticAction implements StackAction {
 
-
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        /*if(split[0].equals("Field")) {
-            String variable = split[1].split(":")[0];
-            block.getWriter().println(variable + " = " + block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
-        }*/
+        ConstantFieldRefInfo constantFieldRefInfo = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantFieldRefInfo.class);
+        String variable = constantFieldRefInfo.getClassName() + "." + constantFieldRefInfo.getNameAndType().getName();
+        block.getWriter().println(variable + " = " + block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
         return true;
     }
 }

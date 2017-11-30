@@ -1,11 +1,10 @@
 package me.lukas81298.decompiler.stack;
 
-import com.sun.org.apache.bcel.internal.generic.IFLT;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.stack.impl.*;
 import me.lukas81298.decompiler.util.VariableStorage;
-import sun.util.locale.provider.LocaleServiceProviderPool;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,37 +103,21 @@ public class StackActionRegistry {
 
     }
 
-    /*public boolean invoke(Block block, String line, int endAt) {
-        String[] firstSplit = line.split("//");
-        String comment = firstSplit.length > 1 ? firstSplit[1].trim() : "";
-        String firstPart = firstSplit[0];
-        String[] subSplit = firstPart.split(":");
-        int index = Integer.parseInt(subSplit[0].trim());
-        if(endAt == index) {
-            return false;
-        }
-        String rawAction = subSplit[1].trim();
-        if(rawAction.startsWith("iinc")) {
-            rawAction = rawAction.replace(", ",","); // todo find better solution
-        }
-        String[] actionParts = rawAction.split(" +");
-        String action = actionParts[0];
-        String arg = actionParts.length == 1 ? "" : actionParts[1];
-
+    public boolean invoke(Block block, String action, int[] data, int cp) {
         Entity entity = this.actionMap.get(action);
         if(entity != null) {
-            return entity.action.handle(entity.type, arg, comment, index, block);
+            return entity.action.handle(entity.type, data, cp, block);
         }
         if(action.contains("_")) {
             String[] split = action.split("_");
             entity = this.actionMap.get(split[0]);
             if(entity != null) {
-                return entity.action.handle(entity.type, split[1], comment, index, block);
+                return entity.action.handle(entity.type, new int[] {Integer.parseInt(split[1])}, cp, block);
             }
         }
-        System.out.println("Invalid action " + action + ":" + arg);
+        System.out.println("Invalid action " + action + ":" + Arrays.toString(data));
         return true;
-    }*/
+    }
 
     private void register(Class<? extends StackAction> clazz, String tag, VariableStorage.PrimitiveType... types) {
         register(false, clazz, tag, types);

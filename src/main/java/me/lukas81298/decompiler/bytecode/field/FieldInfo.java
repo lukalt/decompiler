@@ -1,15 +1,17 @@
-package me.lukas81298.decompiler.bytecode;
+package me.lukas81298.decompiler.bytecode.field;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
-import me.lukas81298.decompiler.bytecode.constant.FieldFlag;
+import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,7 +24,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 public class FieldInfo {
 
-    private final Set<FieldFlag> flags;
+    private final List<FieldFlag> flags;
     private final String name;
     private final String type;
     private final AttributeInfo[] attributes;
@@ -36,9 +38,9 @@ public class FieldInfo {
     }
 
     public static FieldInfo read(ConstantPool constantPool, DataInput input) throws IOException {
-        Set<FieldFlag> flags = FieldFlag.fromBitMask(input.readUnsignedShort());
+        List<FieldFlag> flags = FieldFlag.fromBitMask(input.readUnsignedShort());
         String name = constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue();
-        String descriptor = constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue();
+        String descriptor = MethodDescriptor.parseType(constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue());
         AttributeInfo[] attr = new AttributeInfo[input.readUnsignedShort()];
         for(int i = 0; i < attr.length; i++) {
             attr[i] = AttributeInfo.read(constantPool,input);
