@@ -6,6 +6,8 @@ import gnu.trove.procedure.TIntObjectProcedure;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.bytecode.constant.Constant;
+import me.lukas81298.decompiler.bytecode.constant.ConstantString;
+import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
 
 /**
  * @author lukas
@@ -28,6 +30,14 @@ public class ConstantPool {
 
     public void set(int id, Constant constant) {
         this.constants.put(id, constant);
+    }
+
+    public String getString(int index) {
+        Constant constant = this.constants.get(index);
+        if(constant instanceof ConstantUtf8Info) {
+            return ((ConstantUtf8Info) constant).getValue();
+        }
+        return ((ConstantString)constant).getValue();
     }
 
     @Override

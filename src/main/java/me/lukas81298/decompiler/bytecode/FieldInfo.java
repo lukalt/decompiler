@@ -23,7 +23,7 @@ public class FieldInfo {
 
     private final Set<ClassFlag> flags;
     private final String name;
-    private final String descriptor;
+    private final String type;
     private final AttributeInfo[] attributes;
 
     public boolean isSynthetic() {

@@ -31,13 +31,11 @@ public class ClassFileReader {
                 i++;
             }
         }
-        classFile.setConstantPool(constants);
-        System.out.println("---- CONSTANT POOL ----\n" + constants);
 
+        classFile.setAccessFlags(ClassFlag.fromBitMask(input.readUnsignedShort()));
         classFile.setName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName());
         classFile.setSuperClass(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName());
 
-        System.out.println(classFile);
 
         classFile.setInterfaces(new String[input.readUnsignedShort()]);
         for(int i = 0; i < classFile.getInterfaces().length; i++) {
@@ -58,7 +56,6 @@ public class ClassFileReader {
         for(int i = 0; i < classFile.getAttributes().length; i++) {
             classFile.getAttributes()[i] = AttributeInfo.read(constants, input);
         }
-
         return classFile;
     }
 }
