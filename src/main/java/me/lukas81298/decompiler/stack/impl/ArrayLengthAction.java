@@ -11,7 +11,7 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class ArrayLengthAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         block.getOperandStack().add(new VariableStorage.Variable(block.getOperandStack().remove(0).getRefId() + ".length", VariableStorage.PrimitiveType.OBJECT));
         return true;
     }

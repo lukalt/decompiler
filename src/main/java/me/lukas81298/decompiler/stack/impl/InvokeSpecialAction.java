@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class InvokeSpecialAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         VariableStorage.Variable object = block.getOperandStack().get(0);
         VariableStorage.Variable typeTag = block.getOperandStack().remove(0);
         if(typeTag.getRefId().contains(".") || !comment.contains("java/lang")) {

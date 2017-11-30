@@ -36,13 +36,25 @@ public enum AttributeType {
         in.readFully(code);
         DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(code));
         List<CodeAttribute.CodeItem> codeItemList = new ArrayList<>();
+        boolean wide = false;
         while(buffer.available() > 0) {
             int id = buffer.readUnsignedByte();
-            System.out.println("opcode: " + id + " " + Integer.toHexString(id));
             CodeActionTable.Item item = CodeActionTable.getIdentifierById(id);
-            byte[] data = new byte[item.getData()];
-            buffer.read(data);
+            int[] data = new int[item.getData()];
+            if(wide) {
+                for(int i = 0; i < data.length; i++) {
+                    data[i] = buffer.readUnsignedShort();
+                }
+                wide = false;
+            } else {
+                for(int i = 0; i < data.length; i++) {
+                    data[i] = buffer.readUnsignedByte();
+                }
+            }
             codeItemList.add(new CodeAttribute.CodeItem(item.getName(), data));
+            if(id == 0xC4) {
+                wide = true;
+            }
         }
         CodeAttribute.ExceptionItem[] exceptions = new CodeAttribute.ExceptionItem[in.readUnsignedShort()];
         for(int i = 0; i < exceptions.length; i++) {

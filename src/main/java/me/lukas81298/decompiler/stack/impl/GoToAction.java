@@ -11,9 +11,9 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class GoToAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         int target = Integer.parseInt(arg);
-        if(target > lineNumber) {
+        if(target > pc) {
             // some kind of else structure
         } else {
             // some kind of loop, probably while

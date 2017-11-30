@@ -11,7 +11,7 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class WideAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         // dummy, not needed
         return true;
     }

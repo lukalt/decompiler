@@ -34,7 +34,7 @@ public class CodeAttribute extends AttributeData {
     @EqualsAndHashCode(callSuper = false)
     public final static class CodeItem {
         private final String id;
-        private final byte[] additionalData;
+        private final int[] additionalData;
     }
 
     @RequiredArgsConstructor

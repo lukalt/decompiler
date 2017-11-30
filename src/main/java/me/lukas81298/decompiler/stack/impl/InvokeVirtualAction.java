@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class InvokeVirtualAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         String[] split = comment.split(" ");
         if(split[0].equals("Method")) {
             String methodName = split[1].split(":")[0].split("\\.")[1];

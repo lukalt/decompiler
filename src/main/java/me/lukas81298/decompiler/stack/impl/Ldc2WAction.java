@@ -11,7 +11,7 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class Ldc2WAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         String[] split = comment.split(" ");
         if(split[0].equals("long")) {
             if(split[1].endsWith("l")) {

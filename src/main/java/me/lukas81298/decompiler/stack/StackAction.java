@@ -8,5 +8,5 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public interface StackAction {
 
-    boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block);
+    boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block);
 }

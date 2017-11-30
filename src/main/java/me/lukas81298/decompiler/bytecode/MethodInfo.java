@@ -34,6 +34,14 @@ public class MethodInfo {
         return this.flags.contains(MethodFlag.ACC_FINAL);
     }
 
+    public String getSignature() {
+        StringBuilder sb = new StringBuilder();
+        for(MethodFlag flag : this.flags) {
+
+        }
+        return sb.toString();
+    }
+
     public static MethodInfo read(ConstantPool constantPool, DataInput input) throws IOException {
         Set<MethodFlag> flags = MethodFlag.fromBitMask(input.readUnsignedShort());
         String name = constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue();

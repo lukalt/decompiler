@@ -18,7 +18,7 @@ public class BiAbstractIfAction implements StackAction {
     private final String operation;
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int lineNumber, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
         String operation = this.operation.replace("{0}", block.getOperandStack().remove(0).getRefId()).replace("{1}", block.getOperandStack().remove(0).getRefId());
 
         BlockStructure blockStructure = new IfStructure(new Block(block.getLevel() + 1, block.getVariables(), block.getWriter(), block.getDefinedVariables(), block.getParser()), Integer.parseInt(arg));
