@@ -76,7 +76,7 @@ public enum AttributeType {
     }),
     INNER_CLASSES("InnerClasses", null),
     ENCLOSING_METHOD("EnclosingMethod", null),
-    SYNTHETIC("Synthetic", null),
+    SYNTHETIC("Synthetic", (in,c) -> new SyntheticAttribute()),
     SIGNATURE("Signature", (in,c) -> {
         return new SignatureAttribute(c.getString(in.readUnsignedShort()));
     }),
@@ -106,7 +106,7 @@ public enum AttributeType {
         return new LocalVariableAttribute(locals);
     }),
     LOCAL_VARIABLE_TYPE_TABLE("LocalVariableTypeTable", null),
-    DEPRECATED("Deprecated", null),
+    DEPRECATED("Deprecated", (in,c) -> new DeprecatedAttribute()),
     RUNTIME_VISIBLE_ANNOTATIONS("RuntimeVisibleAnnotations", null),
     RUNTIME_INVISIBLE_ANNOTATIONS("RuntimeInvisibleAnnotations", null),
     RUNTIME_VARIABLE_PARAMETER_ANNOTATIONS("RuntimeVisibleParameterAnnotations", null),
