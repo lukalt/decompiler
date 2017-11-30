@@ -11,14 +11,14 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class StoreAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         VariableStorage.Variable element = block.getOperandStack().remove(0);
-        int i = Integer.parseInt(arg);
-        block.getVariables().set(i, element.getValue(), type, "local" + arg);
+        int i = data[0];
+        block.getVariables().set(i, element.getValue(), type, "local" + i);
         if(block.getDefinedVariables().add(i)) {
-            block.getWriter().println(element.getType().getLabel() + " local" + arg + " = " + element.getRefId() + ";", block.getLevel());
+            block.getWriter().println(element.getType().getLabel() + " local" + i + " = " + element.getRefId() + ";", block.getLevel());
         } else {
-            block.getWriter().println("local" + arg + " = " + element.getRefId() + ";", block.getLevel());
+            block.getWriter().println("local" + i + " = " + element.getRefId() + ";", block.getLevel());
         }
         return true;
     }

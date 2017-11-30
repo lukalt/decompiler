@@ -10,9 +10,10 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class InstanceOfAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        block.getOperandStack().add(new VariableStorage.Variable("(" + block.getOperandStack().remove(0) + " instanceof " + arg.replace("/",".") + " ? 1 : 0)", VariableStorage.PrimitiveType.OBJECT));
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        //block.getOperandStack().add(new VariableStorage.Variable("(" + block.getOperandStack().remove(0) + " instanceof " + arg.replace("/",".") + " ? 1 : 0)", VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 }

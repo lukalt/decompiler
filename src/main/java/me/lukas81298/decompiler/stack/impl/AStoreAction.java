@@ -10,8 +10,9 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class AStoreAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         String array = block.getOperandStack().remove(0).getRefId();
         String index = block.getOperandStack().remove(0).getRefId();
         String value = block.getOperandStack().remove(0).getRefId();

@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
  */
 public class InvokeVirtualAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = comment.split(" ");
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*String[] split = comment.split(" ");
         if(split[0].equals("Method")) {
             String methodName = split[1].split(":")[0].split("\\.")[1];
             String refName = block.getOperandStack().remove(0).getRefId();
@@ -26,7 +27,7 @@ public class InvokeVirtualAction implements StackAction {
                 block.getOperandStack().clear();
                 block.getOperandStack().add(new VariableStorage.Variable(result, VariableStorage.PrimitiveType.EXPRESSION));
             }
-        }
+        }*/
         return true;
     }
 }

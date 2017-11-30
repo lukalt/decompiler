@@ -11,12 +11,12 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class GetStaticAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = comment.split(" ");
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*String[] split = comment.split(" ");
         if(split[0].equals("Field")) {
             String s = split[1].split(":")[0].replace("/", ".");
             block.getOperandStack().add(new VariableStorage.Variable(s, VariableStorage.PrimitiveType.OBJECT));
-        }
+        }*/
         return true;
     }
 }

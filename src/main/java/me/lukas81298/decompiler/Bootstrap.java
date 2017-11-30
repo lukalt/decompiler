@@ -1,11 +1,9 @@
 package me.lukas81298.decompiler;
 
+import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ClassFileReader;
-import me.lukas81298.decompiler.structure.AbstractStructure;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -23,7 +21,8 @@ public class Bootstrap {
         }*/
 
         try {
-            System.out.println(ClassFileReader.read(new FileInputStream("Test.class")).toString());
+            ClassFile classFile = ClassFileReader.read(new FileInputStream("Test.class"));
+            new Decompiler(classFile, System.out).decompile();
         } catch(IOException e) {
             e.printStackTrace();
         }

@@ -33,8 +33,8 @@ public class ClassFileReader {
         }
 
         classFile.setAccessFlags(ClassFlag.fromBitMask(input.readUnsignedShort()));
-        classFile.setName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName());
-        classFile.setSuperClass(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName());
+        classFile.setName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName().replace("/", "."));
+        classFile.setSuperClass(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName().replace("/", "."));
 
 
         classFile.setInterfaces(new String[input.readUnsignedShort()]);

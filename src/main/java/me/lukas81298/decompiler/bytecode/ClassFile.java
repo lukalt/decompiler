@@ -54,12 +54,11 @@ public class ClassFile {
         }
         stringBuilder.append(name).append(" ");
         if(superClass != null && this.accessFlags.contains(ClassFlag.ACC_SUPER)) {
-            stringBuilder.append("extends ").append(superClass);
+            stringBuilder.append("extends ").append(superClass.replace("/", "."));
         }
         if(interfaces.length > 0) {
             stringBuilder.append("implements ").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
         }
-        stringBuilder.append("{");
         return stringBuilder.toString();
     }
 }

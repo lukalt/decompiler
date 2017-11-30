@@ -1,4 +1,4 @@
-package me.lukas81298.decompiler.bytecode;
+package me.lukas81298.decompiler.bytecode.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,32 +12,24 @@ import java.util.Set;
  */
 @Getter
 @RequiredArgsConstructor
-public enum MethodFlag {
+public enum FieldFlag {
 
     ACC_PUBLIC(0x0001, "public"),
     ACC_PRIVATE(0x0002, "private"),
     ACC_PROTECTED(0x0004, "protected"),
     ACC_STATIC(0x0008, "static"),
     ACC_FINAL(0x0010, "final"),
-    ACC_SYNCHRONIZED(0x0020, "synchronized"),
-    ACC_BRIDGE(0x0040),
-    ACC_VARARGS(0x0080),
-    ACC_NATIVE(0x0100, "native"),
-    ACC_ABSTRACT(0x4000, "abstract"),
-    ACC_STRICT(0x800),
-    ACC_SYNTHETIC(0x1000);
+    ACC_VOLATILE(0x0040, "volatile"),
+    ACC_TRANSIENT(0x0080, "transient"),
+    ACC_SYNTHETIC(0x1000, "synthetic"),
+    ACC_ENUM(0x4000, "enum");
 
     private final int value;
     private final String name;
 
-    MethodFlag(int value) {
-        this.value = value;
-        this.name = null;
-    }
-
-    public static Set<MethodFlag> fromBitMask(int bitMask) {
-        Set<MethodFlag> set = new HashSet<>();
-        for(MethodFlag classFlag : values()) {
+    public static Set<FieldFlag> fromBitMask(int bitMask) {
+        Set<FieldFlag> set = new HashSet<>();
+        for(FieldFlag classFlag : values()) {
             if((bitMask & classFlag.getValue()) == classFlag.getValue()) {
                 set.add(classFlag);
             }

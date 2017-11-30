@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
+import me.lukas81298.decompiler.util.IndentedPrintWriter;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -37,8 +38,11 @@ public class MethodInfo {
     public String getSignature() {
         StringBuilder sb = new StringBuilder();
         for(MethodFlag flag : this.flags) {
-
+            if(flag.getName() != null) {
+                sb.append(flag.getName()).append(" ");
+            }
         }
+        sb.append(descriptor).append(" ").append(name).append("()");
         return sb.toString();
     }
 
@@ -51,5 +55,9 @@ public class MethodInfo {
             attr[i] = AttributeInfo.read(constantPool,input);
         }
         return new MethodInfo(flags, name, descriptor, attr);
+    }
+
+    public void write(IndentedPrintWriter ouput, int i) {
+        // todo
     }
 }

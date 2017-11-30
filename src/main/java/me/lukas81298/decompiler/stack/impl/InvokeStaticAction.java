@@ -10,9 +10,10 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class InvokeStaticAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = comment.split(" ");
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*String[] split = comment.split(" ");
         if(split[0].equals("Method")) {
             StringBuilder methodRef = new StringBuilder(split[1].split(":")[0].replace("/", ".")).append("(");
             boolean first = true;
@@ -31,7 +32,7 @@ public class InvokeStaticAction implements StackAction {
             } else {
                 block.getOperandStack().add(new VariableStorage.Variable(methodRef.toString(), VariableStorage.PrimitiveType.OBJECT));
             }
-        }
+        }*/
         return true;
     }
 }

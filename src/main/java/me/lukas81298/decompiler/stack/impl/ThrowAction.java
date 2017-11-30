@@ -11,7 +11,7 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class ThrowAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         block.getWriter().println(block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
         return true;
     }

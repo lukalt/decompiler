@@ -10,14 +10,14 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class ALoadAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        if(arg.equals("0")) {
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*if(arg.equals("0")) {
             block.getOperandStack().add(new VariableStorage.Variable("this", VariableStorage.PrimitiveType.OBJECT));
         } else {
             block.getOperandStack().add(block.getVariables().get(Integer.parseInt(arg)));
-        }
+        }*/
         return true;
     }
-
 }

@@ -3,9 +3,6 @@ package me.lukas81298.decompiler.stack.impl;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.VariableStorage;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.stream.Collectors;
 
 /**
  * @author lukas
@@ -13,11 +10,12 @@ import java.util.stream.Collectors;
  */
 public class InvokeSpecialAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        VariableStorage.Variable object = block.getOperandStack().get(0);
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        VariableStorage.Variable object = block.getOperandStack().remove(0);
         VariableStorage.Variable typeTag = block.getOperandStack().remove(0);
-        if(typeTag.getRefId().contains(".") || !comment.contains("java/lang")) {
+        /*if(typeTag.getRefId().contains(".") || !comment.contains("java/lang")) {
             block.getOperandStack().remove(0);
 
             String s = "new " + typeTag.getRefId() + "(" + String.join(", ", block.getOperandStack().stream().map(v -> {
@@ -30,7 +28,7 @@ public class InvokeSpecialAction implements StackAction {
                 return v.getRefId();
             }).collect(Collectors.toList())) + ");", block.getLevel());
             block.getOperandStack().clear();
-        }
+        }*/
 
         /*
          List<String> args = new ArrayList<>();

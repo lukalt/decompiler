@@ -10,8 +10,9 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class AConstNullAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         block.getOperandStack().add(new VariableStorage.Variable("null", VariableStorage.PrimitiveType.NULL));
         return true;
     }

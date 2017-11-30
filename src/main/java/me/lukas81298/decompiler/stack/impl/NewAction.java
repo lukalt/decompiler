@@ -11,13 +11,13 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class NewAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = comment.split(" ");
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*String[] split = comment.split(" ");
         switch(split[0]) {
             case "class":
                 block.getOperandStack().add(new VariableStorage.Variable(split[1].replace("/","."), VariableStorage.PrimitiveType.OBJECT));
                 break;
-        }
+        }*/
         return true;
     }
 }

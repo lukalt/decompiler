@@ -10,14 +10,13 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class PutStaticAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = comment.split(" ");
-        if(split[0].equals("Field")) {
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*if(split[0].equals("Field")) {
             String variable = split[1].split(":")[0];
             block.getWriter().println(variable + " = " + block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
-        }
+        }*/
         return true;
     }
-
 }

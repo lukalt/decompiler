@@ -11,13 +11,12 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class PutFieldAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = comment.split(" ");
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*String[] split = comment.split(" ");
         if(split[0].equals("Field")) {
             String fieldName = split[1].split(":")[0];
             block.getWriter().println(block.getOperandStack().remove(0).getRefId() + "." + fieldName + " = " + block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
-        }
+        }*/
         return true;
     }
-
 }

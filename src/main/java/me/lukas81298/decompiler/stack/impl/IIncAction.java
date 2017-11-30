@@ -11,8 +11,8 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class IIncAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        String[] split = arg.split(",");
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*String[] split = arg.split(",");
         int var = Integer.parseInt(split[0]);
         int mod = Integer.parseInt(split[1]);
         VariableStorage.Variable v = block.getVariables().get(var);
@@ -24,7 +24,7 @@ public class IIncAction implements StackAction {
             block.getWriter().println(v.getRefId() + " += " + mod + ";", block.getLevel());
         } else {
             block.getWriter().println(v.getRefId() + " -= " + (mod * -1) + ";", block.getLevel());
-        }
+        }*/
         return true;
     }
 }

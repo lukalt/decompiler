@@ -10,9 +10,10 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class ConstAction implements StackAction {
 
+
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        block.getOperandStack().add(new VariableStorage.Variable(type.getParse().apply(arg), type));
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        block.getOperandStack().add(new VariableStorage.Variable(data[0], type));
         return true;
     }
 }

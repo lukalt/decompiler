@@ -11,14 +11,14 @@ import me.lukas81298.decompiler.util.VariableStorage;
 public class LdcAction implements StackAction {
 
     @Override
-    public boolean handle(VariableStorage.PrimitiveType type, String arg, String comment, int pc, Block block) {
-        if(arg.startsWith("\"")) { // handle as string
+    public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
+        /*if(arg.startsWith("\"")) { // handle as string
             block.getOperandStack().add(new VariableStorage.Variable(arg, VariableStorage.PrimitiveType.OBJECT));
         } else if(arg.contains(".")) { // handle as float
             block.getOperandStack().add(new VariableStorage.Variable(Float.parseFloat(arg), VariableStorage.PrimitiveType.FLOAT));
         } else { // handle as int
             block.getOperandStack().add(new VariableStorage.Variable(Integer.parseInt(arg), VariableStorage.PrimitiveType.INT));
-        }
+        }*/
         return true;
     }
 }

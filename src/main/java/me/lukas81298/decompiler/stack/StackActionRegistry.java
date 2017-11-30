@@ -104,7 +104,7 @@ public class StackActionRegistry {
 
     }
 
-    public boolean invoke(Block block, String line, int endAt) {
+    /*public boolean invoke(Block block, String line, int endAt) {
         String[] firstSplit = line.split("//");
         String comment = firstSplit.length > 1 ? firstSplit[1].trim() : "";
         String firstPart = firstSplit[0];
@@ -134,7 +134,7 @@ public class StackActionRegistry {
         }
         System.out.println("Invalid action " + action + ":" + arg);
         return true;
-    }
+    }*/
 
     private void register(Class<? extends StackAction> clazz, String tag, VariableStorage.PrimitiveType... types) {
         register(false, clazz, tag, types);
