@@ -34,9 +34,9 @@ public class Test {
         int m = test.k;
         if(m < i) {
             System.exit(e);
-        } else {
-            System.exit(f);
         }
+        System.exit(f);
+
 
         int[] array = new int[2];
         array[0] = 1;

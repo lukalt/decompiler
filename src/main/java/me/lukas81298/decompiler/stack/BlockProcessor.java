@@ -23,8 +23,9 @@ public class BlockProcessor {
         while((item = block.getQueue().poll()) != null) {
             stackActionRegistry.invoke(this.block, item.getId(), item.getAdditionalData(), this.block.getQueue().index());
             if(limit >= 0 && block.getQueue().index() > limit + 1) {
-                return;
+               // return;
             }
+            block.getQueue().setCounter(block.getQueue().getCounter() + Math.max(1, item.getAdditionalData().length));
         }
     }
 }

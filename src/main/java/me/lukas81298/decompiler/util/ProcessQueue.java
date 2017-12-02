@@ -1,6 +1,9 @@
 package me.lukas81298.decompiler.util;
 
+import lombok.Generated;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author lukas
@@ -11,6 +14,10 @@ public class ProcessQueue<K> {
 
     private int index = 0;
     private final K[] items;
+
+    @Setter
+    @Getter
+    private int counter = 0;
 
     public K poll() {
         if(this.index >= this.items.length) {

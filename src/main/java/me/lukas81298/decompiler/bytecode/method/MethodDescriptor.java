@@ -41,7 +41,7 @@ public class MethodDescriptor {
 
     public static String parseType(String s) {
         if(s.startsWith("[")) {
-            return parseType(s.substring(1) + "[]"); // add one array dimension
+            return parseType(s.substring(1) ) + "[]"; // add one array dimension
         }
         if(s.startsWith("L")) {
             return makeClassName(s.substring(1).replace(";", ""));

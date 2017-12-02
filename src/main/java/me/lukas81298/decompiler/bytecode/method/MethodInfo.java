@@ -130,7 +130,12 @@ public class MethodInfo {
         ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode());
         Block block = Block.newBlock(i, output,  constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
         BlockProcessor blockProcessor = new BlockProcessor(block);
-        blockProcessor.processBlock();
+        try {
+            blockProcessor.processBlock();
+        } catch(Throwable t) {
+            System.out.println(i + "LINE");
+            t.printStackTrace();
+        }
     }
 
     public void write(IndentedPrintWriter output, int i, ConstantPool constantPool) {

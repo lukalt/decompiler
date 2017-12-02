@@ -22,11 +22,15 @@ public class BiAbstractIfAction implements StackAction {
 
         boolean isLoop = false;
         block.getWriter().println((isLoop ? "while" : "if") + " (" + operation + ") {", block.getLevel());
-        int target = block.getQueue().index() + Helpers.mergeFirst(data);
+        int index = block.getQueue().getCounter();
+        System.out.println(index);
+        int i = Helpers.mergeFirst(data);
+        System.out.println(i);
+        int target = index + i;
 
         BlockProcessor processor = new BlockProcessor(new Block(block.getLevel() + 1, block.getVariables(), block.getWriter(), block.getDefinedVariables(), block.getConstantPool(), block.getLocalVariables(), block.getQueue()));
         processor.setLimit(target);
-        System.out.println("limit " + target);
+        System.out.println("target " + target);
         processor.processBlock();
         block.getWriter().println("}", block.getLevel());
         return true;

@@ -18,7 +18,9 @@ public class ALoadAction implements StackAction {
         if(data[0] == 0) {
             block.getOperandStack().add(new VariableStorage.Variable("this", VariableStorage.PrimitiveType.OBJECT));
         } else {
-            block.getOperandStack().add(block.getVariables().get(data[0]));
+            VariableStorage.Variable e = block.getVariables().get(data[0]);
+            block.getOperandStack().add(e);
+
         }
         return true;
     }

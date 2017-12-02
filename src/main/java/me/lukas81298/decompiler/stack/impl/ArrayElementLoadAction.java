@@ -10,7 +10,6 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class ArrayElementLoadAction implements StackAction {
 
-
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         String ref = block.getOperandStack().remove(0).getRefId();
@@ -18,4 +17,5 @@ public class ArrayElementLoadAction implements StackAction {
         block.getOperandStack().add(new VariableStorage.Variable(ref + "[" + index + "]", type));
         return true;
     }
+
 }

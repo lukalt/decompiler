@@ -10,7 +10,6 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class BiPushAction implements StackAction {
 
-
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         block.getOperandStack().add(new VariableStorage.Variable(data[0], VariableStorage.PrimitiveType.BYTE));

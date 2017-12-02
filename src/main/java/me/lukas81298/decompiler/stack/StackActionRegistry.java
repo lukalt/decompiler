@@ -115,7 +115,6 @@ public class StackActionRegistry {
                 return entity.action.handle(entity.type, new int[] {Integer.parseInt(split[1])}, cp, block);
             }
         }
-        System.out.println("Invalid action " + action + ":" + Arrays.toString(data));
         return true;
     }
 

@@ -4,6 +4,7 @@ import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ClassFileReader;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -22,7 +23,7 @@ public class Bootstrap {
 
         try {
             ClassFile classFile = ClassFileReader.read(new FileInputStream("Test.class"));
-            new Decompiler(classFile, System.out, classFile.getConstantPool()).decompile();
+            new Decompiler(classFile, new FileOutputStream("Test_decompiled.java"), classFile.getConstantPool()).decompile();
         } catch(IOException e) {
             e.printStackTrace();
         }
