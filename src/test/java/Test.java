@@ -45,11 +45,9 @@ public class Test {
         j = array[0];
         int length = array.length;
 
-        byte[] array2 = new byte[] { 1, 2, 3 };
-        Object[] objectArray = new Object[4];
-        while(d < e) {
-            d++;
-        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("test");
+        stringBuilder.append("b");
 
 
     }

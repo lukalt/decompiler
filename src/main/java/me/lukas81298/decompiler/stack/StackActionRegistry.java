@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.stack.impl.*;
 import me.lukas81298.decompiler.util.VariableStorage;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +99,8 @@ public class StackActionRegistry {
         this.register(ThrowAction.class, "throw");
         this.register(GoToAction.class, "goto");
         this.register(GoToAction.class, "goto_w");
-
+        this.register(PopAction.class, "pop");
+        this.register(PopAction.class, "pop2");
     }
 
     public boolean invoke(Block block, String action, int[] data, int cp) {
@@ -115,6 +115,7 @@ public class StackActionRegistry {
                 return entity.action.handle(entity.type, new int[] {Integer.parseInt(split[1])}, cp, block);
             }
         }
+        System.out.println(action + " not found");
         return true;
     }
 

@@ -5,9 +5,6 @@ import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.Helpers;
 import me.lukas81298.decompiler.util.VariableStorage;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.stream.Collectors;
 
 /**
  * @author lukas
@@ -34,7 +31,6 @@ public class InvokeVirtualAction implements StackAction {
         } else {
             block.getOperandStack().add(new VariableStorage.Variable(result, VariableStorage.PrimitiveType.OBJECT));
         }
-
         return true;
     }
 }

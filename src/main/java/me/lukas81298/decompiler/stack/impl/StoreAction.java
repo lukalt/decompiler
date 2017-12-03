@@ -23,10 +23,14 @@ public class StoreAction implements StackAction {
             typeName = local.getDescriptor();
         }
         block.getVariables().set(i, element.getValue(), type, name);
+        String value = element.getRefId();
+        while(value.startsWith("(") && value.endsWith(")")) {
+            value = value.substring(1, value.length() - 1);
+        }
         if(block.getDefinedVariables().add(i)) {
-            block.getWriter().println( typeName + " " + name + " = " + element.getRefId() + ";", block.getLevel());
+            block.getWriter().println( typeName + " " + name + " = " + value + ";", block.getLevel());
         } else {
-            block.getWriter().println(name + " = " + element.getRefId() + ";", block.getLevel());
+            block.getWriter().println(name + " = " + value + ";", block.getLevel());
         }
         return true;
     }
