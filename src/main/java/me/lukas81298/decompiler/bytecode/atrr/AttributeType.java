@@ -99,7 +99,7 @@ public enum AttributeType {
             localVariable.setStartPc(in.readUnsignedShort());
             localVariable.setLength(in.readUnsignedShort());
             localVariable.setName(c.get(in.readUnsignedShort()).toString());
-            localVariable.setDescriptor(MethodDescriptor.parseType(c.get(in.readUnsignedShort()).toString()));
+            localVariable.setDescriptor(MethodDescriptor.parseType(c.get(in.readUnsignedShort()).toString(), null));
             localVariable.setIndex(in.readUnsignedShort());
             locals.put(localVariable.getIndex(), localVariable);
         }

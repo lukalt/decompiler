@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
@@ -37,10 +38,10 @@ public class FieldInfo {
         return this.flags.contains(FieldFlag.ACC_FINAL);
     }
 
-    public static FieldInfo read(ConstantPool constantPool, DataInput input) throws IOException {
+    public static FieldInfo read(ConstantPool constantPool, DataInput input, ClassFile classFile) throws IOException {
         List<FieldFlag> flags = FieldFlag.fromBitMask(input.readUnsignedShort());
         String name = constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue();
-        String descriptor = MethodDescriptor.parseType(constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue());
+        String descriptor = MethodDescriptor.parseType(constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue(), classFile);
         AttributeInfo[] attr = new AttributeInfo[input.readUnsignedShort()];
         for(int i = 0; i < attr.length; i++) {
             attr[i] = AttributeInfo.read(constantPool,input);

@@ -18,7 +18,7 @@ public class InvokeStaticAction implements StackAction {
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
 
         ConstantMethodRefInfo methodRefInfo = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantMethodRefInfo.class);
-        MethodDescriptor methodDescriptor = methodRefInfo.getMethodDescriptor();
+        MethodDescriptor methodDescriptor = methodRefInfo.getMethodDescriptor(block.getClassFile());
         StringBuilder sb = new StringBuilder(MethodDescriptor.makeClassName(methodRefInfo.getClassName().getName()) + "." + methodRefInfo.getName() + "(");
         for(int i = 0; i < methodDescriptor.getArgumentTypes().length; i++) {
             if(i > 0) {

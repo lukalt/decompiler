@@ -6,6 +6,7 @@ import gnu.trove.set.hash.TIntHashSet;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
 import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
@@ -24,6 +25,7 @@ import java.util.List;
 @Getter
 public class Block {
 
+    private final ClassFile classFile;
     private final int level;
     private final VariableStorage variables;
     private final IndentedPrintWriter writer;
@@ -36,8 +38,8 @@ public class Block {
     @Setter
     private boolean superChecker = false;
 
-    public static Block newBlock(int level, IndentedPrintWriter writer, ConstantPool constantPool, ProcessQueue<CodeAttribute.CodeItem> queue, TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables) {
-        return new Block(level, new VariableStorage(), writer, new TIntHashSet(), constantPool, localVariables, queue);
+    public static Block newBlock(ClassFile classFile, int level, IndentedPrintWriter writer, ConstantPool constantPool, ProcessQueue<CodeAttribute.CodeItem> queue, TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables) {
+        return new Block(classFile, level, new VariableStorage(), writer, new TIntHashSet(), constantPool, localVariables, queue);
     }
 
 }

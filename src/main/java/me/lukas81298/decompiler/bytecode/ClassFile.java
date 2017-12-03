@@ -8,9 +8,11 @@ import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.field.FieldInfo;
 import me.lukas81298.decompiler.bytecode.method.MethodInfo;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * @author lukas
@@ -28,12 +30,17 @@ public class ClassFile {
     private Set<ClassFlag> accessFlags = new HashSet<>();
 
     private String name;
+    private String packageName = "";
     private String superClass;
 
     private String[] interfaces;
     private FieldInfo[] fields;
     private MethodInfo[] methods;
     private AttributeInfo[] attributes;
+
+    private final Set<String> imports = new HashSet<>();
+    // maps the name of the type to its fqn
+    private final Map<String, String> importedTypeNames = new HashMap<>();
 
     public String getSignature() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -62,5 +69,20 @@ public class ClassFile {
             stringBuilder.append(" implements").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
         }
         return stringBuilder.toString();
+    }
+
+    public void writeHeader(PrintWriter output) throws IOException {
+        if(!this.packageName.isEmpty()) {
+            output.println("package " + this.packageName + ";\n");
+        }
+        List<String> imports = new ArrayList<>(this.imports);
+        imports.sort(String.CASE_INSENSITIVE_ORDER);
+        for(String anImport : imports) {
+            output.println("import " + anImport + ";");
+        }
+        if(!this.imports.isEmpty()) {
+            output.println();
+        }
+
     }
 }

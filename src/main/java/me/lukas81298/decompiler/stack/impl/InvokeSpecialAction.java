@@ -22,7 +22,7 @@ public class InvokeSpecialAction implements StackAction {
         if(block.isSuperChecker()) {
             StringBuilder s = new StringBuilder();
             s.append("new ").append(object.getRefId()).append("(");
-            for(int i = 0; i < methodRef.getMethodDescriptor().getArgumentTypes().length; i++) {
+            for(int i = 0; i < methodRef.getMethodDescriptor(block.getClassFile()).getArgumentTypes().length; i++) {
                 if(i > 0) {
                     s.append(", ");
                 }

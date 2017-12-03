@@ -1,6 +1,7 @@
 package me.lukas81298.decompiler.stack.impl;
 
 import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
+import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.VariableStorage;
@@ -27,6 +28,7 @@ public class StoreAction implements StackAction {
         while(value.startsWith("(") && value.endsWith(")")) {
             value = value.substring(1, value.length() - 1);
         }
+        typeName = MethodDescriptor.makeClassName(typeName, block.getClassFile());
         if(block.getDefinedVariables().add(i)) {
             block.getWriter().println( typeName + " " + name + " = " + value + ";", block.getLevel());
         } else {

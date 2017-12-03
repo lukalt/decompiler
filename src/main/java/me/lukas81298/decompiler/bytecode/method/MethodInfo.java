@@ -1,6 +1,5 @@
 package me.lukas81298.decompiler.bytecode.method;
 
-import gnu.trove.TCollections;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,8 +16,6 @@ import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.BlockProcessor;
-import me.lukas81298.decompiler.stack.StackAction;
-import me.lukas81298.decompiler.stack.StackActionRegistry;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.ProcessQueue;
 
@@ -27,7 +24,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +68,7 @@ public class MethodInfo {
                 sb.append(flag.getName()).append(" ");
             }
         }
-        MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor);
+        MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
 
         MethodType methodType = MethodType.byName(this.name);
         switch(methodType) {
@@ -128,7 +124,7 @@ public class MethodInfo {
         CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
         LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
         ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode());
-        Block block = Block.newBlock(i, output,  constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
+        Block block = Block.newBlock(classFile, i, output,  constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
         BlockProcessor blockProcessor = new BlockProcessor(block);
         try {
             blockProcessor.processBlock();

@@ -1,3 +1,8 @@
+package me.lukas81298.decompiler.stack;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Test {
 
     private static int a;
@@ -35,6 +40,9 @@ public class Test {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(test);
             stringBuilder.append(b);
+            List list = new ArrayList();
+            stringBuilder.add(list.toString());
+            object.add(list.toString());
         }
     }
 

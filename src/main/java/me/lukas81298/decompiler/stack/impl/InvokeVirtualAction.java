@@ -19,14 +19,14 @@ public class InvokeVirtualAction implements StackAction {
         ConstantMethodRefInfo methodRef = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantMethodRefInfo.class);
         String name = methodRef.getNameAndType().getName();
         StringBuilder result = new StringBuilder(refName + "." + name + "(");
-        for(int i = 0; i < methodRef.getMethodDescriptor().getArgumentTypes().length; i++) {
+        for(int i = 0; i < methodRef.getMethodDescriptor(block.getClassFile()).getArgumentTypes().length; i++) {
             if(i > 0) {
                 result.append(", ");
             }
             result.append(block.getOperandStack().remove(0).getRefId());
         }
         result.append(")");
-        if(methodRef.getMethodDescriptor().getReturnType().equals("void")) {
+        if(methodRef.getMethodDescriptor(block.getClassFile()).getReturnType().equals("void")) {
             block.getWriter().println(result + ";", block.getLevel());
         } else {
             block.getOperandStack().add(new VariableStorage.Variable(result, VariableStorage.PrimitiveType.OBJECT));

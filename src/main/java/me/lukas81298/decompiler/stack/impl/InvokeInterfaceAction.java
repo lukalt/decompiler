@@ -1,5 +1,6 @@
 package me.lukas81298.decompiler.stack.impl;
 
+import me.lukas81298.decompiler.bytecode.constant.ConstantInterfaceMethodRefInfo;
 import me.lukas81298.decompiler.bytecode.constant.ConstantMethodRefInfo;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
@@ -15,10 +16,10 @@ public class InvokeInterfaceAction implements StackAction {
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         String toInvoke = block.getOperandStack().remove(0).getRefId();
-        ConstantMethodRefInfo methodRef = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantMethodRefInfo.class);
+        ConstantInterfaceMethodRefInfo methodRef = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantInterfaceMethodRefInfo.class);
         String name = methodRef.getNameAndType().getName();
         StringBuilder result = new StringBuilder(toInvoke + "." + name + "(");
-        for(int i = 0; i < methodRef.getMethodDescriptor().getArgumentTypes().length; i++) {
+        for(int i = 0; i < methodRef.getMethodDescriptor(block.getClassFile()).getArgumentTypes().length; i++) {
             if(i > 0) {
                 result.append(", ");
             }

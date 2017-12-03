@@ -29,7 +29,7 @@ public class BiAbstractIfAction implements StackAction {
         System.out.println(i);
         int target = index + i;
 
-        BlockProcessor processor = new BlockProcessor(new Block(block.getLevel() + 1, block.getVariables(), block.getWriter(), new TIntHashSet(block.getDefinedVariables()), block.getConstantPool(), block.getLocalVariables(), block.getQueue()));
+        BlockProcessor processor = new BlockProcessor(new Block(block.getClassFile(),block.getLevel() + 1, block.getVariables(), block.getWriter(), new TIntHashSet(block.getDefinedVariables()), block.getConstantPool(), block.getLocalVariables(), block.getQueue()));
         processor.setLimit(target);
         System.out.println("target " + target);
         processor.processBlock();

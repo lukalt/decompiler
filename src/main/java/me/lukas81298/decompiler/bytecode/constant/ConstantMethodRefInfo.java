@@ -1,5 +1,6 @@
 package me.lukas81298.decompiler.bytecode.constant;
 
+import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 
@@ -17,8 +18,8 @@ public class ConstantMethodRefInfo extends FMConstantAbstract {
         return this.getNameAndType().getName();
     }
 
-    public MethodDescriptor getMethodDescriptor() {
-        return MethodDescriptor.parse(this.getNameAndType().getDescriptor());
+    public MethodDescriptor getMethodDescriptor(ClassFile classFile) {
+        return MethodDescriptor.parse(this.getNameAndType().getDescriptor(), classFile);
     }
 
     @Override

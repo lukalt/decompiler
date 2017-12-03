@@ -1,3 +1,9 @@
+package me.lukas81298.decompiler.stack;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author lukas
  * @since 25.11.2017
@@ -48,6 +54,10 @@ public class Test {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("test");
         stringBuilder.append("b");
+
+        List list = new ArrayList();
+        list.add(stringBuilder.toString());
+        list.add(object.toString());
 
 
     }

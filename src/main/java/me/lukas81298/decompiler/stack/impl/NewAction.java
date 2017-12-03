@@ -17,7 +17,7 @@ public class NewAction implements StackAction {
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         block.setSuperChecker(true);
-        block.getOperandStack().add(new VariableStorage.Variable(MethodDescriptor.makeClassName(block.getConstantPool().get(Helpers.mergeFirst(data)).toString()), VariableStorage.PrimitiveType.OBJECT));
+        block.getOperandStack().add(new VariableStorage.Variable(MethodDescriptor.makeClassName(block.getConstantPool().get(Helpers.mergeFirst(data)).toString(), block.getClassFile()), VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 }
