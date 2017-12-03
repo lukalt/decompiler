@@ -1,14 +1,18 @@
 package me.lukas81298.decompiler.stack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Test {
 
     private static int a;
     private int k;
+    private int fieldA;
+    private int fieldB;
+    private Collection collection;
 
-    public Test() {
+    public Test(, int k, int fieldA, int fieldB, Collection collection) {
         super();
     }
 
@@ -26,7 +30,7 @@ public class Test {
         e = d * e;
         System.out.println(e);
         Test.a = d;
-        Test test = new Test();
+        Test test = new Test(Test, i, j, e);
         test.k = j;
         int m = test.k;
         if (m < i) {

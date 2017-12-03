@@ -1,9 +1,14 @@
 package me.lukas81298.decompiler.bytecode.method;
 
+import gnu.trove.list.TCharList;
+import gnu.trove.list.array.TCharArrayList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.bytecode.ClassFile;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author lukas
@@ -17,18 +22,14 @@ public class MethodDescriptor {
     private final String[] argumentTypes;
 
     public static MethodDescriptor parse(String input, ClassFile classFile) {
-        input = input.substring(1);
+        input = input.substring(1); // remove initial '('
         String[] split = input.split("\\)");
-        String[] argsSplit = split[0].split(",");
-
         String[] args;
-        if(argsSplit[0].isEmpty()) {
+        if(split[0].isEmpty()) {
             args = new String[0];
         } else {
-            args = new String[argsSplit.length];
-            for(int i = 0; i < argsSplit.length; i++) {
-                args[i] = parseType(argsSplit[i], classFile);
-            }
+            List<String> out = new ArrayList<>(parseArgumentTypes(split[0], classFile));
+            args = out.toArray(new String[out.size()]);
         }
         return new MethodDescriptor(parseType(split[1], classFile), args);
     }
@@ -64,31 +65,70 @@ public class MethodDescriptor {
         return makeClassName(s, null);
     }
 
+    private static List<String> parseArgumentTypes(String s, ClassFile classFile) {
+        Queue<Character> queue = new LinkedList<>();
+        for(char q : s.toCharArray()) {
+            queue.add(q);
+        }
+        ArrayList<String> list = new ArrayList<>();
+        parseArgumentTypes(queue, list, classFile );
+        return list;
+    }
+
+    private static void parseArgumentTypes(Queue<Character> queue, List<String> list, ClassFile classFile) {
+        if(queue.isEmpty()) {
+            return;
+        }
+        list.add(parseArgumentType(queue, classFile));
+        parseArgumentTypes(queue, list, classFile);
+    }
+
+    private static String parseArgumentType(Queue<Character> queue, ClassFile classFile) {
+        char firstToken = queue.poll();
+        if(firstToken == '[') {
+            return parseArgumentType(queue, classFile) + "[]";
+        } else if(firstToken == 'L') {
+            TCharList li = new TCharArrayList();
+            char c;
+            while((c = queue.poll()) != ';') {
+                li.add(c);
+            }
+            return makeClassName(new String(li.toArray()), classFile);
+        } else {
+            return getType(firstToken);
+        }
+    }
+
     public static String parseType(String s, ClassFile classFile) {
-        if(s.startsWith("[")) {
+        char firstToken = s.charAt(0);
+        if(firstToken == '[') {
             return parseType(s.substring(1), classFile) + "[]"; // add one array dimension
         }
-        if(s.startsWith("L")) {
+        if(firstToken == 'L') {
             return makeClassName(s.substring(1).replace(";", ""), classFile);
         }
-        switch(s) {
-            case "V":
+        return getType(firstToken);
+    }
+
+    private static String getType(char i) {
+        switch(i) {
+            case 'V':
                 return "void";
-            case "B":
+            case 'B':
                 return "byte";
-            case "C":
+            case 'C':
                 return "char";
-            case "D":
+            case 'D':
                 return "double";
-            case "F":
+            case 'F':
                 return "float";
-            case "I":
+            case 'I':
                 return "int";
-            case "J":
+            case 'J':
                 return "long";
-            case "S":
+            case 'S':
                 return "short";
-            case "Z":
+            case 'Z':
                 return "boolean";
         }
         return "unknown";

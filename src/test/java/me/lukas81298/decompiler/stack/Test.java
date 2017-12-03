@@ -1,7 +1,7 @@
 package me.lukas81298.decompiler.stack;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,6 +13,15 @@ public class Test {
     private static int a = 0;
 
     private int k;
+    private int fieldA, fieldB;
+    private Collection collection;
+
+    public Test(int k, int fieldA, int fieldB, Collection collection) {
+        this.k = k;
+        this.fieldA = fieldA;
+        this.fieldB = fieldB;
+        this.collection = collection;
+    }
 
     public static void main(String[] args) {
 
@@ -34,7 +43,7 @@ public class Test {
 
         a = d;
 
-        Test test = new Test();
+        Test test = new Test(i, j, e, null);
         test.k = j;
 
         int m = test.k;
