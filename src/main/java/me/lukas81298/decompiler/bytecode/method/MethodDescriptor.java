@@ -29,6 +29,7 @@ public class MethodDescriptor {
             args = new String[0];
         } else {
             List<String> out = new ArrayList<>(parseArgumentTypes(split[0], classFile));
+            out.remove("");
             args = out.toArray(new String[out.size()]);
         }
         return new MethodDescriptor(parseType(split[1], classFile), args);

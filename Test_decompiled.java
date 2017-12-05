@@ -12,7 +12,7 @@ public class Test {
     private int fieldB;
     private Collection collection;
 
-    public Test(, int k, int fieldA, int fieldB, Collection collection) {
+    public Test(int k, int fieldA, int fieldB, Collection collection) {
         super();
     }
 
@@ -21,19 +21,19 @@ public class Test {
         int j = 1;
         int d = i + j;
         int e = d - i;
-        Object object = new Object();
-        System.out.println(object);
-        Object object2 = new Object();
-        int f = i * e;
-        long s = 1324567;
-        d = f % d;
-        e = d * e;
-        System.out.println(e);
-        Test.a = d;
-        Test test = new Test(Test, i, j, e);
-        test.k = j;
-        int m = test.k;
-        if (m < i) {
+        Object object = Object;
+        new Object().println(System.out);
+        Object object2 = object;
+        int f = i;
+        long s = e;
+        d = f;
+        e = d;
+        e.println((d * ((Object * new object()) % 1324567)));
+        Test.a = System.out;
+        Test test = j;
+        e.k = null;
+        int m = test;
+        if (j < test) {
             System.exit(e);
             System.exit(f);
             int[] array = new int[2];
@@ -41,12 +41,12 @@ public class Test {
             array[1] = d;
             j = array[0];
             int length = array.length;
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(test);
-            stringBuilder.append(b);
-            List list = new ArrayList();
-            stringBuilder.add(list.toString());
-            object.add(list.toString());
+            StringBuilder stringBuilder = StringBuilder;
+            test;
+            b;
+            List list = new StringBuilder().append(stringBuilder).append(stringBuilder);
+            stringBuilder;
+            object;
         }
     }
 

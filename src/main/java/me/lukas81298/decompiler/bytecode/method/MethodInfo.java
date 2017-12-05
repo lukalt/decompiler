@@ -87,7 +87,7 @@ public class MethodInfo {
             CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
             LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
             for(String s : descriptor.getArgumentTypes()) {
-                if(i > 0) {
+                if(i > (methodType == MethodType.CONSTRUCTOR ? 1 : 0)) {
                     sb.append(", ");
                 }
                 sb.append(s).append(" ");
