@@ -3,6 +3,7 @@ package me.lukas81298.decompiler.stack.impl;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -16,7 +17,7 @@ public class AbstractIfAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        block.getOperandStack().add(new VariableStorage.Variable("if (" + operation.replace("{0}", block.getOperandStack().remove(0).getRefId()) + ") {", VariableStorage.PrimitiveType.OBJECT));
+        block.getStack().push(new StackItem("if (" + operation.replace("{0}", block.getStack().pop().getRefId()) + ") {", VariableStorage.PrimitiveType.OBJECT));
         /*BlockStructure blockStructure = new IfStructure(new Block(block.getLevel() + 1, block.getVariables(), block.getWriter(), block.getDefinedVariables(), block.getParser()), Integer.parseInt(arg));
         try {
             blockStructure.parse(block.getWriter(), block.getParser(), block.getLevel() + 1);

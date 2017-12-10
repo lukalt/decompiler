@@ -2,6 +2,7 @@ package me.lukas81298.decompiler.stack.impl;
 
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -42,7 +43,7 @@ public class NewArrayAction implements StackAction {
                 t = "undf" + data[0];
                 break;
         }
-        block.getOperandStack().add(new VariableStorage.Variable("new " + t + "[" + block.getOperandStack().remove(0).getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
+        block.getStack().push(new StackItem("new " + t + "[" + block.getStack().pop().getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 

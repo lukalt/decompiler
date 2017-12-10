@@ -12,7 +12,7 @@ public class PopAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        block.getWriter().println(block.getOperandStack().remove(0) .getRefId() + ";", block.getLevel());
+        block.getWriter().println(block.getStack().pop().getRefId() + ";", block.getLevel());
         return true;
     }
 }

@@ -12,7 +12,7 @@ public class DupAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        block.getOperandStack().add(block.getOperandStack().get(0)); // duplicate
+        block.getStack().push(block.getStack().pop()); // duplicate
         return true;
     }
 }

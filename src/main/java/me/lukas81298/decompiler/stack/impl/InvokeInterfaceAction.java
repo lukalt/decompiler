@@ -5,6 +5,7 @@ import me.lukas81298.decompiler.bytecode.constant.ConstantMethodRefInfo;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.Helpers;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -15,18 +16,24 @@ public class InvokeInterfaceAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        String toInvoke = block.getOperandStack().remove(0).getRefId();
         ConstantInterfaceMethodRefInfo methodRef = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantInterfaceMethodRefInfo.class);
-        String name = methodRef.getNameAndType().getName();
-        StringBuilder result = new StringBuilder(toInvoke + "." + name + "(");
+        StringBuilder result = new StringBuilder();
         for(int i = 0; i < methodRef.getMethodDescriptor(block.getClassFile()).getArgumentTypes().length; i++) {
             if(i > 0) {
                 result.append(", ");
             }
-            result.append(block.getOperandStack().remove(0).getRefId());
+            result.append(block.getStack().pop().getRefId());
         }
+        String name = methodRef.getNameAndType().getName();
+
+        String refName = block.getStack().pop().getRefId();
         result.append(")");
-        block.getOperandStack().add(new VariableStorage.Variable(result, VariableStorage.PrimitiveType.OBJECT));
+        String resultString = refName + "." + name + "(" + result;
+        if(methodRef.getMethodDescriptor(block.getClassFile()).getReturnType().equals("void")) {
+            block.getWriter().println(resultString + ";", block.getLevel());
+        } else {
+            block.getStack().push(new StackItem(resultString, VariableStorage.PrimitiveType.OBJECT));
+        }
         return true;
     }
 }

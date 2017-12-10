@@ -2,6 +2,7 @@ package me.lukas81298.decompiler.stack.impl;
 
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -12,8 +13,8 @@ public class NegAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        VariableStorage.Variable remove = block.getOperandStack().remove(0);
-        block.getOperandStack().add(new VariableStorage.Variable("-" + remove.getRefId(), remove.getType()));
+        StackItem remove = block.getStack().pop();
+        block.getStack().push(new StackItem("-" + remove.getRefId(), remove.getType()));
         return true;
     }
 }

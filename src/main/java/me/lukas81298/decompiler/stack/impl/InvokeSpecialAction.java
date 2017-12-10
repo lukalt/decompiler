@@ -3,10 +3,9 @@ package me.lukas81298.decompiler.stack.impl;
 import me.lukas81298.decompiler.bytecode.constant.ConstantMethodRefInfo;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.Helpers;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * @author lukas
@@ -16,26 +15,26 @@ public class InvokeSpecialAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        int index = (data[0] << 8) + data[1];
-        VariableStorage.Variable object = block.getOperandStack().remove(0);
+        int index = Helpers.mergeFirst(data);
         ConstantMethodRefInfo methodRef = block.getConstantPool().get(index, ConstantMethodRefInfo.class);
-        if(block.isSuperChecker()) {
-            StringBuilder s = new StringBuilder();
-            s.append("new ").append(object.getRefId()).append("(");
-            for(int i = 0; i < methodRef.getMethodDescriptor(block.getClassFile()).getArgumentTypes().length; i++) {
-                if(i > 0) {
-                    s.append(", ");
-                }
-                s.append(block.getOperandStack().remove(0).getRefId());
+        String[] argumentTypes = methodRef.getMethodDescriptor(block.getClassFile()).getArgumentTypes();
+        StringBuilder argumentBuilder = new StringBuilder("(");
+        StackItem[] argumentItems = new StackItem[argumentTypes.length];
+        for(int i = 1; i <= argumentTypes.length; i++) {
+            argumentItems[argumentTypes.length - i] = block.getStack().pop();
+        }
+        for(int i = 0; i < argumentTypes.length; i++) {
+            if(i > 0) {
+                argumentBuilder.append(", ");
             }
-            block.getOperandStack().remove(0);
-            block.getOperandStack().add(new VariableStorage.Variable(s.append(")").toString(), VariableStorage.PrimitiveType.EXPRESSION));
-
-        } else {
-            block.getWriter().println((object.getRefId().equals("this") ? "" : (object.getRefId() + ".")) + "super(" + String.join(", ", block.getOperandStack().stream().map(v -> {
-                return v.getRefId();
-            }).collect(Collectors.toList())) + ");", block.getLevel());
-            block.getOperandStack().clear();
+            argumentBuilder.append(argumentItems[i].getRefId());
+        }
+        argumentBuilder.append(")");
+        StackItem object = block.getStack().pop();
+        if(block.isSuperChecker()) {
+            block.getStack().push(new StackItem("new " + object.getRefId() + argumentBuilder, VariableStorage.PrimitiveType.EXPRESSION));
+        } else if(argumentTypes.length > 0) { // prevent useless super() calls
+            block.getWriter().println((!object.getRefId().equals("this") ? (object.getRefId() + ".") : "") + "super" + argumentBuilder, block.getLevel());
         }
 
         block.setSuperChecker(false);

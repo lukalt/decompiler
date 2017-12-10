@@ -41,11 +41,8 @@ public class MethodDescriptor {
             return fqn.substring("java.lang.".length());
         }
         if(classFile != null && fqn.contains(".")) {
-            System.out.println(fqn);
             String packageName = StringUtils.substringBeforeLast(fqn, ".");
             String typeName = StringUtils.substringAfterLast(fqn, ".");
-            System.out.println(packageName);
-            System.out.println(typeName);
             if(packageName.equals(classFile.getPackageName())) {
                 return typeName;
             }

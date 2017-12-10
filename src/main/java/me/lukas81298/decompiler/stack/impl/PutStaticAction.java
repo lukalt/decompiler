@@ -17,7 +17,7 @@ public class PutStaticAction implements StackAction {
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         ConstantFieldRefInfo constantFieldRefInfo = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantFieldRefInfo.class);
         String variable = MethodDescriptor.makeClassName(constantFieldRefInfo.getClassName().getName(), block.getClassFile()) + "." + constantFieldRefInfo.getNameAndType().getName();
-        block.getWriter().println(variable + " = " + block.getOperandStack().remove(0).getRefId() + ";", block.getLevel());
+        block.getWriter().println(variable + " = " + block.getStack().pop().getRefId() + ";", block.getLevel());
         return true;
     }
 }

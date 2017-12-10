@@ -5,6 +5,7 @@ import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.Helpers;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -24,13 +25,13 @@ public class InvokeStaticAction implements StackAction {
             if(i > 0) {
                 sb.append(", ");
             }
-            sb.append(block.getOperandStack().remove(0).getRefId());
+            sb.append(block.getStack().pop().getRefId());
         }
         sb.append(")");
         if(methodDescriptor.getReturnType().equals("void")) {
             block.getWriter().println(sb.append(";").toString(), block.getLevel());
         } else {
-            block.getOperandStack().add(new VariableStorage.Variable(sb.toString(), VariableStorage.PrimitiveType.OBJECT));
+            block.getStack().push(new StackItem(sb.toString(), VariableStorage.PrimitiveType.OBJECT));
         }
 
         return true;

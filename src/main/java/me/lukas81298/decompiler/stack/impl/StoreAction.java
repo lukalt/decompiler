@@ -4,6 +4,7 @@ import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
 import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -14,7 +15,7 @@ public class StoreAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        VariableStorage.Variable element = block.getOperandStack().remove(0);
+        StackItem element = block.getStack().pop();
         int i = data[0];
         String name = "local" + i;
         String typeName = element.getType().getLabel();

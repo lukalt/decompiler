@@ -2,6 +2,7 @@ package me.lukas81298.decompiler.stack.impl;
 
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -14,7 +15,7 @@ public class IIncAction implements StackAction {
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         int var = data[0];
         int mod = data[1];
-        VariableStorage.Variable v = block.getVariables().get(var);
+        StackItem v = block.getVariables().get(var);
         if(mod == 1) {
             block.getWriter().println(v.getRefId() + "++;", block.getLevel());
         } else if(mod == -1) {

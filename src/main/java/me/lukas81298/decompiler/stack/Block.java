@@ -12,10 +12,10 @@ import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
 import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.ProcessQueue;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
 /**
  * @author lukas
@@ -29,7 +29,15 @@ public class Block {
     private final int level;
     private final VariableStorage variables;
     private final IndentedPrintWriter writer;
-    private final List<VariableStorage.Variable> operandStack = new ArrayList<>();
+    private final Stack<StackItem> stack = new Stack<StackItem>() {
+        @Override
+        public StackItem push(StackItem item) {
+            if(item == null) {
+                throw new RuntimeException("Cannot put null onto stack");
+            }
+            return super.push(item);
+        }
+    };
     private final TIntSet definedVariables;
     private final ConstantPool constantPool;
     private final TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables;

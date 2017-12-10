@@ -2,6 +2,7 @@ package me.lukas81298.decompiler.stack.impl;
 
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -13,7 +14,7 @@ public class ConstAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        block.getOperandStack().add(new VariableStorage.Variable(data[0], type));
+        block.getStack().push(new StackItem(data[0], type));
         return true;
     }
 }

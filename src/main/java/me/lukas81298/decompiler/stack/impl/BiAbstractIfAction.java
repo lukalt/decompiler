@@ -19,19 +19,16 @@ public class BiAbstractIfAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        String operation = this.operation.replace("{0}", block.getOperandStack().remove(0).getRefId()).replace("{1}", block.getOperandStack().remove(0).getRefId());
+        String operation = this.operation.replace("{0}", block.getStack().pop().getRefId()).replace("{1}", block.getStack().pop().getRefId());
 
         boolean isLoop = false;
         block.getWriter().println((isLoop ? "while" : "if") + " (" + operation + ") {", block.getLevel());
         int index = block.getQueue().getCounter();
-        System.out.println(index);
         int i = Helpers.mergeFirst(data);
-        System.out.println(i);
         int target = index + i;
 
         BlockProcessor processor = new BlockProcessor(new Block(block.getClassFile(),block.getLevel() + 1, block.getVariables(), block.getWriter(), new TIntHashSet(block.getDefinedVariables()), block.getConstantPool(), block.getLocalVariables(), block.getQueue()));
         processor.setLimit(target);
-        System.out.println("target " + target);
         processor.processBlock();
         block.getWriter().println("}", block.getLevel());
         return true;

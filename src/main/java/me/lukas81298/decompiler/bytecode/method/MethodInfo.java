@@ -18,6 +18,7 @@ import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.BlockProcessor;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.ProcessQueue;
+import me.lukas81298.decompiler.util.VariableStorage;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -68,7 +69,6 @@ public class MethodInfo {
                 sb.append(flag.getName()).append(" ");
             }
         }
-        System.out.println(this.descriptor);
         MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
 
         MethodType methodType = MethodType.byName(this.name);
@@ -125,12 +125,23 @@ public class MethodInfo {
         CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
         LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
         ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode());
-        Block block = Block.newBlock(classFile, i, output,  constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
+        Block block = Block.newBlock(classFile, i, output, constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
+        MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
+        // init variable map with method attributes
+        for(int j = 1; j <= descriptor.getArgumentTypes().length; j++) {
+            String refName = "par" + j;
+            if(localVariableAttribute != null) {
+                LocalVariableAttribute.LocalVariable localVariable;
+                if((localVariable = localVariableAttribute.getLocalVariables().get(j)) != null) {
+                    refName = localVariable.getName();
+                }
+            }
+            block.getVariables().set(j, refName, VariableStorage.PrimitiveType.OBJECT);
+        }
         BlockProcessor blockProcessor = new BlockProcessor(block);
         try {
             blockProcessor.processBlock();
         } catch(Throwable t) {
-            System.out.println(i + "LINE");
             t.printStackTrace();
         }
     }
@@ -139,7 +150,7 @@ public class MethodInfo {
         output.println(this.getSignature() + " {", i);
         try {
             writeBody(output, i + 1, constantPool);
-        }catch(Throwable t) {
+        } catch(Throwable t) {
             t.printStackTrace();
             output.println("// Exception: " + t.toString(), i + 1);
         }

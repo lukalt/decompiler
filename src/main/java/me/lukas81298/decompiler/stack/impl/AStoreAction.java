@@ -12,9 +12,9 @@ public class AStoreAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-        String array = block.getOperandStack().remove(0).getRefId();
-        String index = block.getOperandStack().remove(0).getRefId();
-        String value = block.getOperandStack().remove(0).getRefId();
+        String value = block.getStack().pop().getRefId();
+        String index = block.getStack().pop().getRefId();
+        String array = block.getStack().pop().getRefId();
         block.getWriter().println(array + "[" + index + "] = " + value + ";", block.getLevel());
         return true;
     }

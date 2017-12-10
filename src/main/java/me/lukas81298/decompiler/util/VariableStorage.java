@@ -4,9 +4,7 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -25,14 +23,14 @@ public class VariableStorage {
             PrimitiveType.INT, PrimitiveType.DOUBLE, PrimitiveType.FLOAT, PrimitiveType.BYTE, PrimitiveType.LONG, PrimitiveType.OBJECT
     };
 
-    private final TIntObjectMap<Variable> variables = new TIntObjectHashMap<>();
+    private final TIntObjectMap<StackItem> variables = new TIntObjectHashMap<>();
 
     public void set(int index, Object object, PrimitiveType type) {
-        this.variables.put(index, new Variable(object, type));
+        this.variables.put(index, new StackItem(object, type));
     }
 
     public void set(int index, Object object, PrimitiveType type, String name) {
-        this.variables.put(index, new Variable(object, type, name));
+        this.variables.put(index, new StackItem(object, type, name));
     }
 
     public Object getValue(int index) {
@@ -43,32 +41,8 @@ public class VariableStorage {
         return this.variables.get(index).getType();
     }
 
-    public Variable get(int index) {
+    public StackItem get(int index) {
         return this.variables.get(index);
-    }
-
-    @RequiredArgsConstructor
-    @Getter
-    @ToString
-    public static final class Variable {
-
-        private final Object value;
-        private final PrimitiveType type;
-        private final String variableName;
-
-        public Variable(Object value, PrimitiveType type) {
-            this.value = value;
-            this.type = type;
-            this.variableName = null;
-        }
-
-        public boolean hasName() {
-            return this.variableName != null;
-        }
-
-        public String getRefId() {
-            return this.hasName() ? this.variableName : Objects.toString(this.value);
-        }
     }
 
     @RequiredArgsConstructor

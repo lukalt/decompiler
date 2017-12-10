@@ -5,6 +5,7 @@ import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.stack.Block;
 import me.lukas81298.decompiler.stack.StackAction;
 import me.lukas81298.decompiler.util.Helpers;
+import me.lukas81298.decompiler.util.StackItem;
 import me.lukas81298.decompiler.util.VariableStorage;
 
 /**
@@ -17,7 +18,7 @@ public class GetStaticAction implements StackAction {
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
         ConstantFieldRefInfo fieldRef = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantFieldRefInfo.class);
         String s = MethodDescriptor.makeClassName(fieldRef.getClassName() + "." + fieldRef.getNameAndType().getName());
-        block.getOperandStack().add(new VariableStorage.Variable(s, VariableStorage.PrimitiveType.OBJECT));
+        block.getStack().push(new StackItem(s, VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 }
