@@ -61,6 +61,9 @@ public class Test {
         list.add(stringBuilder.toString());
         list.add(object.toString());
         test.a(e, d, j, list);
+        while (i < j) {
+            j++;
+        }
     }
 
     static {

@@ -124,7 +124,7 @@ public class MethodInfo {
     private void writeBody(IndentedPrintWriter output, int i, ConstantPool constantPool) {
         CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
         LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
-        ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode());
+        ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode(), size -> new CodeAttribute.CodeItem[size]);
         Block block = Block.newBlock(classFile, i, output, constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
         MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
         // init variable map with method attributes

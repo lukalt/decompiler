@@ -79,7 +79,9 @@ public class Test {
 
         test.a(e, d, j, list);
 
-
+        while(j < i) {
+            j++;
+        }
     }
 
 }
