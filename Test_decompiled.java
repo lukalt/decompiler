@@ -47,20 +47,20 @@ public class Test {
         int m = test.k;
         if (i < m) {
             System.exit(e);
-            System.exit(f);
-            int[] array = new int[2];
-            array[0] = 1;
-            array[1] = d;
-            j = 0[array];
-            int length = array.length;
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(test);
-            stringBuilder.append(b);
-            List list = new ArrayList();
-            list.add(stringBuilder.toString());
-            list.add(object.toString());
-            test.a(e, d, j, list);
         }
+        System.exit(f);
+        int[] array = new int[2];
+        array[0] = 1;
+        array[1] = d;
+        j = 0[array];
+        int length = array.length;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("test");
+        stringBuilder.append("b");
+        List list = new ArrayList();
+        list.add(stringBuilder.toString());
+        list.add(object.toString());
+        test.a(e, d, j, list);
     }
 
     static {

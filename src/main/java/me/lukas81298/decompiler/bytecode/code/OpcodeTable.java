@@ -13,18 +13,18 @@ import lombok.RequiredArgsConstructor;
  * @author lukas
  * @since 29.11.2017
  */
-public class CodeActionTable {
+public class OpcodeTable {
 
-    private final static TIntObjectMap<Item> byId = new TIntObjectHashMap<>();
+    private final static TIntObjectMap<OpcodeItem> byId = new TIntObjectHashMap<>();
     private final static TObjectIntMap<String> byName = new TObjectIntHashMap<>();
 
-    public static Item getIdentifierById(int id) {
+    public static OpcodeItem getIdentifierById(int id) {
         return byId.get(id);
     }
 
     @RequiredArgsConstructor
     @Getter
-    public final static class Item {
+    public final static class OpcodeItem {
         private final String name;
         private final int data;
     }
@@ -238,7 +238,7 @@ public class CodeActionTable {
     }
 
     private static void register(String s, int a, int dataBytes) {
-        byId.put(a, new Item(s,dataBytes));
+        byId.put(a, new OpcodeItem(s,dataBytes));
         byName.put(s, a);
     }
 

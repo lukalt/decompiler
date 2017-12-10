@@ -35,6 +35,7 @@ public class CodeAttribute extends AttributeData {
     public final static class CodeItem {
         private final String id;
         private final int[] additionalData;
+        private final int pc;
     }
 
     @RequiredArgsConstructor

@@ -14,10 +14,6 @@ public class ProcessQueue<K> {
     private int index = 0;
     private final K[] items;
 
-    @Setter
-    @Getter
-    private int counter = 0;
-
     public K poll() {
         if(this.index >= this.items.length) {
             return null;

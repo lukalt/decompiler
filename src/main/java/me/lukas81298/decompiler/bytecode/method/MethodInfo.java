@@ -139,11 +139,7 @@ public class MethodInfo {
             block.getVariables().set(j, refName, VariableStorage.PrimitiveType.OBJECT);
         }
         BlockProcessor blockProcessor = new BlockProcessor(block);
-        try {
-            blockProcessor.processBlock();
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
+        blockProcessor.processBlock();
     }
 
     public void write(IndentedPrintWriter output, int i, ConstantPool constantPool) {

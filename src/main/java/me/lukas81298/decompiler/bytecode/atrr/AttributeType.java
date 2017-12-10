@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.atrr.impl.*;
-import me.lukas81298.decompiler.bytecode.code.CodeActionTable;
+import me.lukas81298.decompiler.bytecode.code.OpcodeTable;
 import me.lukas81298.decompiler.bytecode.constant.ConstantClassInfo;
 import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.util.BiFunctionException;
@@ -36,10 +36,11 @@ public enum AttributeType {
         DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(code));
         List<CodeAttribute.CodeItem> codeItemList = new ArrayList<>();
         boolean wide = false;
+        int pc = 0;
         while(buffer.available() > 0) {
             int id = buffer.readUnsignedByte();
-            CodeActionTable.Item item = CodeActionTable.getIdentifierById(id);
-            int[] data = new int[item.getData()];
+            OpcodeTable.OpcodeItem opcodeItem = OpcodeTable.getIdentifierById(id);
+            int[] data = new int[opcodeItem.getData()];
             if(wide) {
                 for(int i = 0; i < data.length; i++) {
                     data[i] = buffer.readUnsignedShort();
@@ -50,7 +51,10 @@ public enum AttributeType {
                     data[i] = buffer.readUnsignedByte();
                 }
             }
-            codeItemList.add(new CodeAttribute.CodeItem(item.getName(), data));
+            CodeAttribute.CodeItem e = new CodeAttribute.CodeItem(opcodeItem.getName(), data, pc);
+            codeItemList.add(e);
+
+            pc += (1 + opcodeItem.getData());
             if(id == 0xC4) {
                 wide = true;
             }

@@ -1,6 +1,7 @@
 package me.lukas81298.decompiler.stack;
 
 import lombok.RequiredArgsConstructor;
+import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
 import me.lukas81298.decompiler.stack.impl.*;
 import me.lukas81298.decompiler.util.VariableStorage;
 
@@ -103,19 +104,19 @@ public class StackActionRegistry {
         this.register(PopAction.class, "pop2");
     }
 
-    public boolean invoke(Block block, String action, int[] data, int cp) {
-        Entity entity = this.actionMap.get(action);
+    public boolean invoke(Block block, CodeAttribute.CodeItem item, int[] data) {
+        Entity entity = this.actionMap.get(item.getId());
         if(entity != null) {
-            return entity.action.handle(entity.type, data, cp, block);
+            return entity.action.handle(entity.type, data, item.getPc(), block);
         }
-        if(action.contains("_")) {
-            String[] split = action.split("_");
+        if(item.getId().contains("_")) {
+            String[] split = item.getId().split("_");
             entity = this.actionMap.get(split[0]);
             if(entity != null) {
-                return entity.action.handle(entity.type, new int[] {Integer.parseInt(split[1])}, cp, block);
+                return entity.action.handle(entity.type, new int[] {Integer.parseInt(split[1])}, item.getPc(), block);
             }
         }
-        System.out.println(action + " not found");
+        System.out.println(item.getId() + " not found");
         return true;
     }
 
