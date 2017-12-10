@@ -17,23 +17,15 @@ public class InvokeStaticAction implements StackAction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Block block) {
-
         ConstantMethodRefInfo methodRefInfo = block.getConstantPool().get(Helpers.mergeFirst(data), ConstantMethodRefInfo.class);
         MethodDescriptor methodDescriptor = methodRefInfo.getMethodDescriptor(block.getClassFile());
-        StringBuilder sb = new StringBuilder(MethodDescriptor.makeClassName(methodRefInfo.getClassName().getName()) + "." + methodRefInfo.getName() + "(");
-        for(int i = 0; i < methodDescriptor.getArgumentTypes().length; i++) {
-            if(i > 0) {
-                sb.append(", ");
-            }
-            sb.append(block.getStack().pop().getRefId());
-        }
-        sb.append(")");
+        StringBuilder sb = new StringBuilder(MethodDescriptor.makeClassName(methodRefInfo.getClassName().getName()) + "." + methodRefInfo.getName());
+        sb.append(MethodDescriptor.parseArgumentSignature(methodDescriptor.getArgumentTypes(), block.getStack()));
         if(methodDescriptor.getReturnType().equals("void")) {
             block.getWriter().println(sb.append(";").toString(), block.getLevel());
         } else {
             block.getStack().push(new StackItem(sb.toString(), VariableStorage.PrimitiveType.OBJECT));
         }
-
         return true;
     }
 }

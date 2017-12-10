@@ -19,6 +19,15 @@ public class Test {
         this.collection = collection;
     }
 
+    public void a(int a, int b, int c, Collection h) {
+        int b = c;
+        int a = b;
+        this.collection = h;
+        this.k = 0;
+        this.fieldA = b;
+        this.fieldB = a;
+    }
+
     public static void main(String[] args) {
         int i = 118;
         int j = 1;
@@ -50,6 +59,7 @@ public class Test {
             List list = new ArrayList();
             list.add(stringBuilder.toString());
             list.add(object.toString());
+            test.a(e, d, j, list);
         }
     }
 

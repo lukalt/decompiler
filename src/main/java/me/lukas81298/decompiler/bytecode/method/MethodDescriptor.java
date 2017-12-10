@@ -5,6 +5,7 @@ import gnu.trove.list.array.TCharArrayList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.bytecode.ClassFile;
+import me.lukas81298.decompiler.util.StackItem;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -130,6 +131,22 @@ public class MethodDescriptor {
                 return "boolean";
         }
         return "unknown";
+    }
+
+    public static String parseArgumentSignature(String[] argumentTypes, Stack<StackItem> stack) {
+        StringBuilder argumentBuilder = new StringBuilder("(");
+        StackItem[] argumentItems = new StackItem[argumentTypes.length];
+        for(int i = 1; i <= argumentTypes.length; i++) {
+            argumentItems[argumentTypes.length - i] = stack.pop();
+        }
+        for(int i = 0; i < argumentTypes.length; i++) {
+            if(i > 0) {
+                argumentBuilder.append(", ");
+            }
+            argumentBuilder.append(argumentItems[i].getRefId());
+        }
+        argumentBuilder.append(")");
+        return argumentBuilder.toString();
     }
 
 

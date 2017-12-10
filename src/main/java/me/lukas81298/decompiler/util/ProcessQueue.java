@@ -1,6 +1,5 @@
 package me.lukas81298.decompiler.util;
 
-import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

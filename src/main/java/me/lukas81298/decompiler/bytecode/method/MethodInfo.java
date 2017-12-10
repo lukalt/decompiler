@@ -83,11 +83,11 @@ public class MethodInfo {
         }
         if(methodType != MethodType.STATIC_CONSTRUCTOR) {
             sb.append("(");
-            int i = methodType == MethodType.CONSTRUCTOR ? 1 : 0;
+            int i = flags.contains(MethodFlag.ACC_STATIC) ? 0 : 1;
             CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
             LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
             for(String s : descriptor.getArgumentTypes()) {
-                if(i > (methodType == MethodType.CONSTRUCTOR ? 1 : 0)) {
+                if(i > (flags.contains(MethodFlag.ACC_STATIC) ? 0 : 1)) {
                     sb.append(", ");
                 }
                 sb.append(s).append(" ");
