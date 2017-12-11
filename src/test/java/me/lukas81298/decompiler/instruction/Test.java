@@ -15,6 +15,7 @@ public class Test<K,V extends List> {
 
     private int k;
     private int fieldA, fieldB;
+    private List<K> fieldOfTypeK;
     private Collection collection;
 
     public Test(int k, int fieldA, int fieldB, Collection collection) {
@@ -22,6 +23,12 @@ public class Test<K,V extends List> {
         this.fieldA = fieldA;
         this.fieldB = fieldB;
         this.collection = collection;
+        this.fieldOfTypeK = new ArrayList<K>();
+        this.fieldOfTypeK.addAll(collection);
+    }
+
+    private K test(V arg1, boolean b, Object h) {
+        return this.fieldOfTypeK.get(0);
     }
 
     private void testVarArgs(int a, int... b) {

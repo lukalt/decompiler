@@ -7,16 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
-import me.lukas81298.decompiler.bytecode.atrr.AttributeData;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
-import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
-import me.lukas81298.decompiler.bytecode.atrr.impl.DeprecatedAttribute;
-import me.lukas81298.decompiler.bytecode.atrr.impl.ExceptionsAttribute;
-import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
+import me.lukas81298.decompiler.bytecode.atrr.impl.*;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
-import me.lukas81298.decompiler.instruction.Context;
 import me.lukas81298.decompiler.instruction.BlockProcessor;
+import me.lukas81298.decompiler.instruction.Context;
+import me.lukas81298.decompiler.util.AttributeCollections;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.ProcessQueue;
 import me.lukas81298.decompiler.util.VariableStorage;
@@ -43,11 +40,7 @@ public class MethodInfo {
         List<MethodFlag> flags = MethodFlag.fromBitMask(input.readUnsignedShort());
         String name = constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue();
         String descriptor = constantPool.get(input.readUnsignedShort(), ConstantUtf8Info.class).getValue();
-        AttributeInfo[] attr = new AttributeInfo[input.readUnsignedShort()];
-        for(int i = 0; i < attr.length; i++) {
-            attr[i] = AttributeInfo.read(constantPool, input);
-        }
-        return new MethodInfo(flags, name, descriptor, attr, parent);
+        return new MethodInfo(flags, name, descriptor, AttributeCollections.readAttributeArray(input, constantPool), parent);
     }
 
     private final List<MethodFlag> flags;
@@ -65,11 +58,15 @@ public class MethodInfo {
     }
 
     public boolean isDeprecated() {
-        return this.getAttributeByType(AttributeType.DEPRECATED, DeprecatedAttribute.class) != null;
+        return AttributeCollections.getAttributeByType(this.attributes, AttributeType.DEPRECATED, DeprecatedAttribute.class) != null;
     }
 
-    public String getSignature() {
+    public String getSignature(ClassFile classFile) {
         StringBuilder sb = new StringBuilder();
+        SignatureAttribute signatureAttribute = AttributeCollections.getAttributeByType(attributes, AttributeType.SIGNATURE, SignatureAttribute.class);
+        if(signatureAttribute != null) {
+            sb.append("/* ").append(signatureAttribute.getMethodGenericString(classFile)).append(" */ ");
+        }
         for(MethodFlag flag : this.flags) {
             if(flag.getName() != null) {
                 sb.append(flag.getName()).append(" ");
@@ -80,7 +77,7 @@ public class MethodInfo {
         MethodType methodType = MethodType.byName(this.name);
         switch(methodType) {
             case METHOD:
-                sb.append(descriptor.getReturnType()).append(" ").append(this.name);
+                sb.append(MethodDescriptor.makeClassName(descriptor.getReturnType(),classFile)).append(" ").append(this.name);
                 break;
             case CONSTRUCTOR:
                 sb.append(classFile.getName());
@@ -90,7 +87,7 @@ public class MethodInfo {
         if(methodType != MethodType.STATIC_CONSTRUCTOR) {
             sb.append("(");
             int i = flags.contains(MethodFlag.ACC_STATIC) ? 0 : 1;
-            CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
+            CodeAttribute codeAttribute = Objects.requireNonNull(AttributeCollections.getAttributeByType(this.attributes, AttributeType.CODE, CodeAttribute.class));
             LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
             int j = 0;
             for(String s : descriptor.getArgumentTypes()) {
@@ -116,7 +113,7 @@ public class MethodInfo {
             ExceptionsAttribute exceptionsAttribute = codeAttribute.getAttributeByType(AttributeType.EXCEPTIONS, ExceptionsAttribute.class);
             if(exceptionsAttribute != null && exceptionsAttribute.getExceptionTable().length > 0) {
                 sb.append(" throws ").append(String.join(", ", Arrays.stream(exceptionsAttribute.getExceptionTable()).map(e -> {
-                    return MethodDescriptor.makeClassName(e.getName());
+                    return MethodDescriptor.makeClassName(e.getName(), classFile);
                 }).collect(Collectors.toList())));
             }
         } else {
@@ -125,20 +122,11 @@ public class MethodInfo {
         return sb.toString();
     }
 
-    private <K extends AttributeData> K getAttributeByType(AttributeType attributeType, Class<K> clazz) {
-        for(AttributeInfo attribute : this.attributes) {
-            if(attribute.getType() == attributeType) {
-                return clazz.cast(attribute.getData());
-            }
-        }
-        return null;
-    }
-
     private void writeBody(IndentedPrintWriter output, int i, ConstantPool constantPool) {
-        CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
+        CodeAttribute codeAttribute = Objects.requireNonNull(AttributeCollections.getAttributeByType(this.attributes, AttributeType.CODE, CodeAttribute.class));
         LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
         ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode(), size -> new CodeAttribute.CodeItem[size]);
-        Context context = Context.newBlock(classFile, i, output, constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
+        Context context = Context.createContext(this.classFile, i, output, constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
         MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
         // init variable map with method attributes
         for(int j = 1; j <= descriptor.getArgumentTypes().length; j++) {
@@ -159,7 +147,7 @@ public class MethodInfo {
         if(isDeprecated()) {
             output.println("@Deprecated", i);
         }
-        output.println(this.getSignature() + " {", i);
+        output.println(this.getSignature(classFile) + " {", i);
         try {
             writeBody(output, i + 1, constantPool);
         } catch(Throwable t) {

@@ -46,7 +46,7 @@ public class Context {
     @Setter
     private boolean superChecker = false;
 
-    public static Context newBlock(ClassFile classFile, int level, IndentedPrintWriter writer, ConstantPool constantPool, ProcessQueue<CodeAttribute.CodeItem> queue, TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables) {
+    public static Context createContext(ClassFile classFile, int level, IndentedPrintWriter writer, ConstantPool constantPool, ProcessQueue<CodeAttribute.CodeItem> queue, TIntObjectMap<LocalVariableAttribute.LocalVariable> localVariables) {
         return new Context(classFile, level, new VariableStorage(), writer, new TIntHashSet(), constantPool, localVariables, queue);
     }
 

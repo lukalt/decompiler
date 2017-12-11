@@ -33,7 +33,7 @@ public class Decompiler {
         buffer.println(this.classFile.getSignature() + " {", 0);
         buffer.println();
         for(FieldInfo fieldInfo : this.classFile.getFields()) {
-            buffer.println(fieldInfo.getSignature() + ";", 1);
+            buffer.println(fieldInfo.getSignature(classFile) + ";", 1);
         }
         if(this.classFile.getFields().length > 0) {
             buffer.println();

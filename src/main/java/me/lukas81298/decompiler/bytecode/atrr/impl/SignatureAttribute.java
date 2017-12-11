@@ -8,6 +8,7 @@ import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeData;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
 import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,23 @@ import java.util.List;
 public class SignatureAttribute extends AttributeData {
 
     private final String signature;
+
+    public String getMethodGenericString(ClassFile classFile) {
+        return this.signature; // todo parse stuff maybe we have to change the return type to support args
+    }
+
+    public String getFieldGenericString(ClassFile classFile) {
+        /* Ljava/util/List<TK;>; */
+        String s = StringUtils.substringBeforeLast(StringUtils.substringAfter(this.signature,"<"), ">");
+        String[] split = s.split(";");
+        List<String> out = new ArrayList<>();
+        for(String s1 : split) {
+            if(!s1.isEmpty()) {
+                out.add(MethodDescriptor.parseType(s1, classFile));
+            }
+        }
+        return out.isEmpty() ? "" : ("<" + String.join(", ", out) + ">");
+    }
 
     public String getClassGenericString(ClassFile classFile) {
         /* Signature: <K:Ljava/lang/Object;V::Ljava/util/List;>Ljava/lang/Object;*/

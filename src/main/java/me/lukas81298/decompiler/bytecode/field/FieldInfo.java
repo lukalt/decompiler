@@ -7,8 +7,12 @@ import lombok.ToString;
 import me.lukas81298.decompiler.bytecode.ClassFile;
 import me.lukas81298.decompiler.bytecode.ConstantPool;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
+import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
+import me.lukas81298.decompiler.bytecode.atrr.impl.SignatureAttribute;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
 import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
+import me.lukas81298.decompiler.util.AttributeCollections;
+import org.w3c.dom.Attr;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -49,12 +53,17 @@ public class FieldInfo {
         return new FieldInfo(flags, name, descriptor, attr);
     }
 
-    public String getSignature() {
+    public String getSignature(ClassFile classFile) {
         StringBuilder sb = new StringBuilder();
         for(FieldFlag flag : this.flags) {
             sb.append(flag.getName()).append(" ");
         }
-        sb.append(type).append(" ").append(name).append("");
+        sb.append(type);
+        SignatureAttribute signatureAttribute = AttributeCollections.getAttributeByType(this.attributes, AttributeType.SIGNATURE, SignatureAttribute.class);
+        if(signatureAttribute != null) {
+            sb.append(signatureAttribute.getFieldGenericString(classFile));
+        }
+        sb.append(" ").append(name).append("");
         return sb.toString();
     }
 }

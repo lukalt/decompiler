@@ -12,7 +12,7 @@ public class ReturnAction implements ByteCodeInstruction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
-        context.getWriter().println("return " + context.getStack().pop().getRefId(), context.getLevel());
+        context.getWriter().println("return " + context.getStack().pop().getRefId() + ";", context.getLevel());
         return false;
     }
 

@@ -102,7 +102,7 @@ public class MethodDescriptor {
         if(firstToken == '[') {
             return parseType(s.substring(1), classFile) + "[]"; // add one array dimension
         }
-        if(firstToken == 'L') {
+        if(firstToken == 'L' || firstToken == 'T') { // T => generic type
             return makeClassName(s.substring(1).replace(";", ""), classFile);
         }
         return getType(firstToken);

@@ -11,7 +11,6 @@ import me.lukas81298.decompiler.util.VariableStorage;
  */
 public class DivAction implements ByteCodeInstruction {
 
-
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
         StackItem first = context.getStack().pop(), second = context.getStack().pop();
