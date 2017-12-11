@@ -11,14 +11,16 @@ import me.lukas81298.decompiler.bytecode.atrr.AttributeData;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
 import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
+import me.lukas81298.decompiler.bytecode.atrr.impl.DeprecatedAttribute;
 import me.lukas81298.decompiler.bytecode.atrr.impl.ExceptionsAttribute;
 import me.lukas81298.decompiler.bytecode.atrr.impl.LocalVariableAttribute;
 import me.lukas81298.decompiler.bytecode.constant.ConstantUtf8Info;
-import me.lukas81298.decompiler.stack.Block;
-import me.lukas81298.decompiler.stack.BlockProcessor;
+import me.lukas81298.decompiler.instruction.Context;
+import me.lukas81298.decompiler.instruction.BlockProcessor;
 import me.lukas81298.decompiler.util.IndentedPrintWriter;
 import me.lukas81298.decompiler.util.ProcessQueue;
 import me.lukas81298.decompiler.util.VariableStorage;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -62,6 +64,10 @@ public class MethodInfo {
         return this.flags.contains(MethodFlag.ACC_FINAL);
     }
 
+    public boolean isDeprecated() {
+        return this.getAttributeByType(AttributeType.DEPRECATED, DeprecatedAttribute.class) != null;
+    }
+
     public String getSignature() {
         StringBuilder sb = new StringBuilder();
         for(MethodFlag flag : this.flags) {
@@ -86,11 +92,17 @@ public class MethodInfo {
             int i = flags.contains(MethodFlag.ACC_STATIC) ? 0 : 1;
             CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
             LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
+            int j = 0;
             for(String s : descriptor.getArgumentTypes()) {
                 if(i > (flags.contains(MethodFlag.ACC_STATIC) ? 0 : 1)) {
                     sb.append(", ");
                 }
-                sb.append(s).append(" ");
+                if(j == descriptor.getArgumentTypes().length - 1 && flags.contains(MethodFlag.ACC_VARARGS) && s.endsWith("[]")) {
+                    sb.append(StringUtils.substringBeforeLast(s, "[]")).append("...");
+                } else {
+                    sb.append(s);
+                }
+                sb.append(" ");
                 LocalVariableAttribute.LocalVariable l;
                 if(localVariableAttribute != null && (l = localVariableAttribute.getLocalVariables().get(i)) != null) {
                     sb.append(l.getName());
@@ -98,6 +110,7 @@ public class MethodInfo {
                     sb.append("arg").append(i);
                 }
                 i++;
+                j++;
             }
             sb.append(")");
             ExceptionsAttribute exceptionsAttribute = codeAttribute.getAttributeByType(AttributeType.EXCEPTIONS, ExceptionsAttribute.class);
@@ -125,7 +138,7 @@ public class MethodInfo {
         CodeAttribute codeAttribute = Objects.requireNonNull(getAttributeByType(AttributeType.CODE, CodeAttribute.class));
         LocalVariableAttribute localVariableAttribute = codeAttribute.getAttributeByType(AttributeType.LOCAL_VARIABLE_TABLE, LocalVariableAttribute.class);
         ProcessQueue<CodeAttribute.CodeItem> queue = new ProcessQueue<>(codeAttribute.getCode(), size -> new CodeAttribute.CodeItem[size]);
-        Block block = Block.newBlock(classFile, i, output, constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
+        Context context = Context.newBlock(classFile, i, output, constantPool, queue, localVariableAttribute == null ? new TIntObjectHashMap<>() : localVariableAttribute.getLocalVariables());
         MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
         // init variable map with method attributes
         for(int j = 1; j <= descriptor.getArgumentTypes().length; j++) {
@@ -136,13 +149,16 @@ public class MethodInfo {
                     refName = localVariable.getName();
                 }
             }
-            block.getVariables().set(j, refName, VariableStorage.PrimitiveType.OBJECT);
+            context.getVariables().set(j, refName, VariableStorage.PrimitiveType.OBJECT);
         }
-        BlockProcessor blockProcessor = new BlockProcessor(block);
+        BlockProcessor blockProcessor = new BlockProcessor(context);
         blockProcessor.processBlock();
     }
 
     public void write(IndentedPrintWriter output, int i, ConstantPool constantPool) {
+        if(isDeprecated()) {
+            output.println("@Deprecated", i);
+        }
         output.println(this.getSignature() + " {", i);
         try {
             writeBody(output, i + 1, constantPool);

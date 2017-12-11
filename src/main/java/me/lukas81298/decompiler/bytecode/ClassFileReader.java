@@ -49,7 +49,7 @@ public class ClassFileReader {
 
         classFile.setInterfaces(new String[input.readUnsignedShort()]);
         for(int i = 0; i < classFile.getInterfaces().length; i++) {
-            classFile.getInterfaces()[i] = constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName();
+            classFile.getInterfaces()[i] = MethodDescriptor.makeClassName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName());
         }
 
         classFile.setFields(new FieldInfo[input.readUnsignedShort()]);

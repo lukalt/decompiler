@@ -66,12 +66,12 @@ public class ClassFile {
             stringBuilder.append(" extends").append(this.superClass);
         }
         if(interfaces.length > 0) {
-            stringBuilder.append(" implements").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
+            stringBuilder.append(" implements ").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
         }
         return stringBuilder.toString();
     }
 
-    public void writeHeader(PrintWriter output) throws IOException {
+    public void writeHeader(PrintWriter output) {
         if(!this.packageName.isEmpty()) {
             output.println("package " + this.packageName + ";\n");
         }

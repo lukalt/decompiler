@@ -56,4 +56,8 @@ public class ProcessQueue<K> implements Iterable<K> {
         }
         return new ProcessQueue<>(sl, this.arrayBuilder);
     }
+
+    public int count() {
+        return this.items.length - this.index;
+    }
 }
