@@ -4,7 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import me.lukas81298.decompiler.bytecode.atrr.AttributeData;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
+import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
+import me.lukas81298.decompiler.bytecode.atrr.impl.SignatureAttribute;
 import me.lukas81298.decompiler.bytecode.field.FieldInfo;
 import me.lukas81298.decompiler.bytecode.method.MethodInfo;
 
@@ -44,6 +47,11 @@ public class ClassFile {
 
     public String getSignature() {
         StringBuilder stringBuilder = new StringBuilder();
+        String signatureString = "";
+        SignatureAttribute signatureAttribute;
+        if((signatureAttribute = getAttributeByType(AttributeType.SIGNATURE, SignatureAttribute.class)) != null) {
+            signatureString = signatureAttribute.getClassGenericString(this);
+        }
         if(this.accessFlags.contains(ClassFlag.ACC_PUBLIC)) {
             stringBuilder.append("public ");
         }
@@ -61,7 +69,7 @@ public class ClassFile {
         } else {
             stringBuilder.append("class");
         }
-        stringBuilder.append(" ").append(this.name);
+        stringBuilder.append(" ").append(this.name).append(signatureString);
         if(superClass != null && this.accessFlags.contains(ClassFlag.ACC_SUPER) && !this.superClass.equals("Object")) {
             stringBuilder.append(" extends").append(this.superClass);
         }
@@ -85,4 +93,14 @@ public class ClassFile {
         }
 
     }
+
+    private <K extends AttributeData> K getAttributeByType(AttributeType attributeType, Class<K> clazz) {
+        for(AttributeInfo attribute : this.attributes) {
+            if(attribute.getType() == attributeType) {
+                return clazz.cast(attribute.getData());
+            }
+        }
+        return null;
+    }
+
 }

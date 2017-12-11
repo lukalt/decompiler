@@ -9,7 +9,6 @@ import me.lukas81298.decompiler.util.StackItem;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * @author lukas

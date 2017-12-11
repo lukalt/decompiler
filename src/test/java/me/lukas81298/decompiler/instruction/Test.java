@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * @author lukas
  * @since 25.11.2017
  */
-public class Test {
+public class Test<K,V extends List> {
 
     private static int a = 0;
 

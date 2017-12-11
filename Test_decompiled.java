@@ -1,10 +1,10 @@
-package me.lukas81298.decompiler.stack;
+package me.lukas81298.decompiler.instruction;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Test {
+public class Test<K, V extends List> {
 
     private static int a;
     private int k;
@@ -71,7 +71,7 @@ public class Test {
         list.add(stringBuilder.toString());
         list.add(object.toString());
         // Warning: Currently anonymous inner classes are not supported, please decompile Test$1 yourself
-        new Test$1();
+        new Test$1(list);
         test.a(e, d, j, list);
         if (i < j) {
             j++;
