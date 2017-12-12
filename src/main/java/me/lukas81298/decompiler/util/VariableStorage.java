@@ -57,7 +57,8 @@ public class VariableStorage {
         OBJECT("Object", "a", s -> s),
         CHAR("char", "c", c -> c + ""),
         NULL("null", "", s -> s),
-        EXPRESSION("Object", "", s -> s); // ik this is not a primitive :D
+        EXPRESSION("Object", "", s -> s),
+        INSTANCE_OF_EXPRESSION("instanceof", "", s -> s); // ik this is not a primitive :D
 
         private final String label;
         private final String prefix;

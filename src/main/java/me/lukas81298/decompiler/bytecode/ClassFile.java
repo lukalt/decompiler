@@ -10,6 +10,7 @@ import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
 import me.lukas81298.decompiler.bytecode.atrr.impl.SignatureAttribute;
 import me.lukas81298.decompiler.bytecode.field.FieldInfo;
 import me.lukas81298.decompiler.bytecode.method.MethodInfo;
+import me.lukas81298.decompiler.util.AttributeCollections;
 
 import java.io.DataOutput;
 import java.io.DataOutputStream;
@@ -49,7 +50,7 @@ public class ClassFile {
         StringBuilder stringBuilder = new StringBuilder();
         String signatureString = "";
         SignatureAttribute signatureAttribute;
-        if((signatureAttribute = getAttributeByType(AttributeType.SIGNATURE, SignatureAttribute.class)) != null) {
+        if((signatureAttribute = AttributeCollections.getAttributeByType(this.attributes, AttributeType.SIGNATURE, SignatureAttribute.class)) != null) {
             signatureString = signatureAttribute.getClassGenericString(this);
         }
         if(this.accessFlags.contains(ClassFlag.ACC_PUBLIC)) {
@@ -92,15 +93,6 @@ public class ClassFile {
             output.println();
         }
 
-    }
-
-    private <K extends AttributeData> K getAttributeByType(AttributeType attributeType, Class<K> clazz) {
-        for(AttributeInfo attribute : this.attributes) {
-            if(attribute.getType() == attributeType) {
-                return clazz.cast(attribute.getData());
-            }
-        }
-        return null;
     }
 
 }

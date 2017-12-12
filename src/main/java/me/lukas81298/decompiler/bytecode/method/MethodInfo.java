@@ -64,15 +64,14 @@ public class MethodInfo {
     public String getSignature(ClassFile classFile) {
         StringBuilder sb = new StringBuilder();
         SignatureAttribute signatureAttribute = AttributeCollections.getAttributeByType(attributes, AttributeType.SIGNATURE, SignatureAttribute.class);
-        if(signatureAttribute != null) {
-            sb.append("/* ").append(signatureAttribute.getMethodGenericString(classFile)).append(" */ ");
-        }
+        String sig = signatureAttribute != null && !signatureAttribute.getSignature().isEmpty() ? signatureAttribute.getSignature() : this.descriptor;
+        System.out.println(sig);
         for(MethodFlag flag : this.flags) {
             if(flag.getName() != null) {
                 sb.append(flag.getName()).append(" ");
             }
         }
-        MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
+        MethodDescriptor descriptor = MethodDescriptor.parse(sig, this.classFile);
 
         MethodType methodType = MethodType.byName(this.name);
         switch(methodType) {

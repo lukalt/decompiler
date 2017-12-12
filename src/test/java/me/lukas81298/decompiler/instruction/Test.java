@@ -23,20 +23,27 @@ public class Test<K,V extends List> {
         this.fieldA = fieldA;
         this.fieldB = fieldB;
         this.collection = collection;
-        this.fieldOfTypeK = new ArrayList<K>();
+        this.fieldOfTypeK = new ArrayList<>();
         this.fieldOfTypeK.addAll(collection);
     }
 
-    private K test(V arg1, boolean b, Object h) {
+    private K test(V arg1, boolean b, Object h, List<V> list) {
         return this.fieldOfTypeK.get(0);
     }
 
     private void testVarArgs(int a, int... b) {
-
+        for(int i : b) {
+            a += i;
+        }
     }
 
     private void testNoVarArgs(int a, int[] b) {
-
+        testVarArgs(a, b);
+        testNoVarArgs(a, b[0]);
+        testNoVarArgs(a, b[1]);
+        if(this.collection instanceof List) {
+            testNoVarArgs(a, b[2]);
+        }
     }
 
     private void testNoVarArgs(int a, int b) {

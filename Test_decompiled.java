@@ -22,14 +22,28 @@ public class Test<K, V extends List> {
         this.fieldOfTypeK.addAll(collection);
     }
 
-    /* (TV;ZLjava/lang/Object;)TK; */ private Object test(List arg1, boolean b, Object h) {
+    private K test(V arg1, boolean b, Object h, java.util.List<TV list, unknown arg5, unknown arg6) {
         return this.fieldOfTypeK.get(0);
     }
 
     private void testVarArgs(int a, int... b) {
+        Object local3 = b;
+        Object local4 = local3.length;
+        int local5 = 0;
+        if (local4 < local5) {
+            int i = local3[local5];
+            int a = i + a;
+            local5++;
+        }
     }
 
     private void testNoVarArgs(int a, int[] b) {
+        super(a, b)
+        super(a, b[0])
+        super(a, b[1])
+        if (this.collection instanceof List) {
+            super(a, b[2])
+        }
     }
 
     private void testNoVarArgs(int a, int b) {

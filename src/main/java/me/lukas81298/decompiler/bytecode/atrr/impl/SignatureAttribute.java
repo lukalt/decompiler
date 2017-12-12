@@ -26,10 +26,6 @@ public class SignatureAttribute extends AttributeData {
 
     private final String signature;
 
-    public String getMethodGenericString(ClassFile classFile) {
-        return this.signature; // todo parse stuff maybe we have to change the return type to support args
-    }
-
     public String getFieldGenericString(ClassFile classFile) {
         /* Ljava/util/List<TK;>; */
         String s = StringUtils.substringBeforeLast(StringUtils.substringAfter(this.signature,"<"), ">");
@@ -45,7 +41,7 @@ public class SignatureAttribute extends AttributeData {
 
     public String getClassGenericString(ClassFile classFile) {
         /* Signature: <K:Ljava/lang/Object;V::Ljava/util/List;>Ljava/lang/Object;*/
-
+        System.out.println(this.signature);
         String first = this.signature.substring(1).split(">")[0]; // omit type
         String[] types = first.split(";");
         List<String> out = new ArrayList<>();

@@ -42,7 +42,7 @@ public class MethodDescriptor {
         }
         if(classFile != null && fqn.contains(".")) {
             String packageName = StringUtils.substringBeforeLast(fqn, ".");
-            String typeName = StringUtils.substringAfterLast(fqn, ".");
+            String typeName = StringUtils.substringBefore(StringUtils.substringAfterLast(fqn, "."), "<");
             if(packageName.equals(classFile.getPackageName())) {
                 return typeName;
             }
@@ -68,7 +68,7 @@ public class MethodDescriptor {
         for(char q : s.toCharArray()) {
             queue.add(q);
         }
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         parseArgumentTypes(queue, list, classFile );
         return list;
     }
@@ -85,7 +85,7 @@ public class MethodDescriptor {
         char firstToken = queue.poll();
         if(firstToken == '[') {
             return parseArgumentType(queue, classFile) + "[]";
-        } else if(firstToken == 'L') {
+        } else if(firstToken == 'L' || firstToken == 'T') {
             TCharList li = new TCharArrayList();
             char c;
             while((c = queue.poll()) != ';') {

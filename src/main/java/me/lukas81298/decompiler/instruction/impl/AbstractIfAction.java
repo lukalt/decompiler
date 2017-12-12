@@ -6,10 +6,7 @@ import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
 import me.lukas81298.decompiler.instruction.Context;
 import me.lukas81298.decompiler.instruction.BlockProcessor;
 import me.lukas81298.decompiler.instruction.ByteCodeInstruction;
-import me.lukas81298.decompiler.util.Helpers;
-import me.lukas81298.decompiler.util.ProcessQueue;
-import me.lukas81298.decompiler.util.StructureType;
-import me.lukas81298.decompiler.util.VariableStorage;
+import me.lukas81298.decompiler.util.*;
 
 /**
  * @author lukas
@@ -22,7 +19,12 @@ public class AbstractIfAction implements ByteCodeInstruction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
-        writeSubBlock(this.operation.replace("{0}", context.getStack().pop().getRefId()), context, data, pc);
+        StackItem pop = context.getStack().pop();
+        if(pop.getType() == VariableStorage.PrimitiveType.INSTANCE_OF_EXPRESSION) {
+            writeSubBlock(pop.getRefId(), context, data, pc);
+        } else {
+            writeSubBlock(this.operation.replace("{0}", pop.getRefId()), context, data, pc);
+        }
         return true;
     }
 
