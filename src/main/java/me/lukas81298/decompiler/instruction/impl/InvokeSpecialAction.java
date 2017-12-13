@@ -18,13 +18,22 @@ public class InvokeSpecialAction implements ByteCodeInstruction {
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
         int index = Helpers.mergeFirst(data);
         ConstantMethodRefInfo methodRef = context.getConstantPool().get(index, ConstantMethodRefInfo.class);
-        String[] argumentTypes = methodRef.getMethodDescriptor(context.getClassFile()).getArgumentTypes();
+        MethodDescriptor methodDescriptor = methodRef.getMethodDescriptor( context.getClassFile() );
+        String[] argumentTypes = methodDescriptor.getArgumentTypes();
         String arguments = MethodDescriptor.parseArgumentSignature(argumentTypes, context.getStack());
         StackItem object = context.getStack().pop();
         if(object.getRefId().contains("$")) {
             context.getWriter().println("// Warning: Currently anonymous inner classes are not supported, please decompile " + object.getRefId() + " yourself", context.getLevel());
         }
-        if(context.isSuperChecker()) {
+        if(!methodRef.getName().equals("<init>")) {
+            // invoke as usual
+            String resultString = object.getRefId() + "." + methodRef.getName() + arguments;
+            if(methodDescriptor.getReturnType().equals("void")) {
+                context.getWriter().println(resultString + ";", context.getLevel());
+            } else {
+                context.getStack().push(new StackItem(resultString, VariableStorage.PrimitiveType.OBJECT));
+            }
+        } else if(context.isSuperChecker()) {
             context.getStack().push(new StackItem("new " + object.getRefId() + arguments, VariableStorage.PrimitiveType.EXPRESSION));
         } else if(argumentTypes.length > 0) { // prevent useless super() calls
             context.getWriter().println((!object.getRefId().equals("this") ? (object.getRefId() + ".") : "") + "super" + arguments, context.getLevel());
