@@ -13,12 +13,7 @@ public class GoToAction implements ByteCodeInstruction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
-        int target = Helpers.mergeFirst(data);
-        if(target > pc) {
-            // some kind of else structure
-        } else {
-           return false;
-        }
+        // ignored, detected by abstractifcond
         return true;
     }
 }

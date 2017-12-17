@@ -27,14 +27,18 @@ public class Test<K, V extends List> {
     }
 
     private void testVarArgs(int a, int... b) {
-        Object local3 = b;
-        Object local4 = local3.length;
-        int local5 = 0;
-        if (local4 < local5) {
-            int i = local3[local5];
-            int a = i + a;
-            local5++;
+        byte z = b;
+        short s = z.length;
+        Short sh = 0;
+        if (s < sh) {
+            int i = z[sh];
+            a = i + a;
+            sh++;
         }
+        z = (byte) a;
+        s = (short) z;
+        sh = new Short(s);
+        s = sh.shortValue();
     }
 
     private void testNoVarArgs(int a, int[] b) {
@@ -51,8 +55,8 @@ public class Test<K, V extends List> {
 
     @Deprecated
     public void a(int a, int b, int c, Collection h) {
-        int b = c;
-        int a = b;
+        b = c;
+        a = b;
         this.collection = h;
         this.k = 0;
         this.fieldA = b;
@@ -60,7 +64,7 @@ public class Test<K, V extends List> {
     }
 
     public static void main(String[] args) {
-        int i = 118;
+        i = 118;
         int j = 1;
         int d = j + i;
         int e = i - d;

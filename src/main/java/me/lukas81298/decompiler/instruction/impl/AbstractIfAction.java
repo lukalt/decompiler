@@ -34,13 +34,12 @@ public class AbstractIfAction implements ByteCodeInstruction {
         int elseTarget = -1;
         StructureType type = StructureType.IF;
         ProcessQueue<CodeAttribute.CodeItem> slice = context.getQueue().slice();
-        System.out.println(slice.count() + "c");
         CodeAttribute.CodeItem codeItem;
         while((codeItem = slice.poll()) != null) {
             if(codeItem.getId().equals("goto")) {
                 int gotoTarget = Helpers.mergeFirst(codeItem.getAdditionalData()) + codeItem.getPc();
-                System.out.println("goto " + gotoTarget + " " + target + " ");
-                if(gotoTarget < target) {
+                System.out.println("goto " + gotoTarget + " " + target + " " + codeItem.getPc());
+                if(gotoTarget < codeItem.getPc()) {
                     type = StructureType.WHILE;
                 } else {
                     CodeAttribute.CodeItem next = slice.peek();

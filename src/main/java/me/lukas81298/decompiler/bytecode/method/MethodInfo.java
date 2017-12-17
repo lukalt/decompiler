@@ -65,7 +65,7 @@ public class MethodInfo {
         StringBuilder sb = new StringBuilder();
         SignatureAttribute signatureAttribute = AttributeCollections.getAttributeByType(attributes, AttributeType.SIGNATURE, SignatureAttribute.class);
         String sig = signatureAttribute != null && !signatureAttribute.getSignature().isEmpty() ? signatureAttribute.getSignature() : this.descriptor;
-        System.out.println(sig);
+    //    System.out.println(sig);
         for(MethodFlag flag : this.flags) {
             if(flag.getName() != null) {
                 sb.append(flag.getName()).append(" ");
@@ -137,6 +137,7 @@ public class MethodInfo {
                 }
             }
             context.getVariables().set(j, refName, VariableStorage.PrimitiveType.OBJECT);
+            context.getDefinedVariables().add(j);
         }
         BlockProcessor blockProcessor = new BlockProcessor(context);
         blockProcessor.processBlock();

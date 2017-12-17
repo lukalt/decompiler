@@ -35,6 +35,10 @@ public class Test<K,V extends List> {
         for(int i : b) {
             a += i;
         }
+        byte z = (byte)a;
+        short s = (short) z;
+        Short sh = new Short(s);
+        s = sh.shortValue();
     }
 
     private void testNoVarArgs(int a, int[] b) {
