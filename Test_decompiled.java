@@ -42,11 +42,11 @@ public class Test<K, V extends List> {
     }
 
     private void testNoVarArgs(int a, int[] b) {
-        super(a, b)
-        super(a, b[0])
-        super(a, b[1])
+        this.testVarArgs(a, b);
+        this.testNoVarArgs(a, b[0]);
+        this.testNoVarArgs(a, b[1]);
         if (this.collection instanceof List) {
-            super(a, b[2])
+            this.testNoVarArgs(a, b[2]);
         }
     }
 
