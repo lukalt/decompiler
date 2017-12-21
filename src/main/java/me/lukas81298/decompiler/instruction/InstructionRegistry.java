@@ -98,7 +98,9 @@ public class InstructionRegistry {
         this.register(new BiAbstractIfAction("{0} <= {1}"), "if_icmpgt");
         this.register(new BiAbstractIfAction("{0} >= {1}"), "if_icmple");
         this.register(new BiAbstractIfAction("{0} > {1}"), "if_icmplt");
-        this.register(ThrowAction.class, "throw");
+        this.register(new BiAbstractIfAction("{0} != {1}"), "if_icmpne");
+        this.register(CheckCastAction.class, "checkcast");
+        this.register(ThrowAction.class, "athrow");
         this.register(GoToAction.class, "goto");
         this.register(GoToAction.class, "goto_w");
         this.register(PopAction.class, "pop");

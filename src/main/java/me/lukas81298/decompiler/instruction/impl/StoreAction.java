@@ -26,9 +26,9 @@ public class StoreAction implements ByteCodeInstruction {
         }
         context.getVariables().set(i, element.getValue(), type, name);
         String value = element.getRefId();
-        while(value.startsWith("(") && value.endsWith(")")) {
+      /*  while(value.startsWith("(") && value.endsWith(")")) {
             value = value.substring(1, value.length() - 1);
-        }
+        }*/
         typeName = MethodDescriptor.makeClassName(typeName, context.getClassFile());
         if(context.getDefinedVariables().add(i)) {
             context.getWriter().println( typeName + " " + name + " = " + value + ";", context.getLevel());

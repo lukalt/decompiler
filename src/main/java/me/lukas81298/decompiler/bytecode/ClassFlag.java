@@ -33,6 +33,9 @@ public enum ClassFlag {
                 set.add(classFlag);
             }
         }
+        if(set.contains(ACC_ENUM)) {
+            set.remove(ACC_FINAL);
+        }
         return set;
     }
 }

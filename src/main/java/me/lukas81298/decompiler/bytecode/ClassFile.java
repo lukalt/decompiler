@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import me.lukas81298.decompiler.bytecode.atrr.AttributeData;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
 import me.lukas81298.decompiler.bytecode.atrr.impl.SignatureAttribute;
@@ -13,9 +12,6 @@ import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.bytecode.method.MethodInfo;
 import me.lukas81298.decompiler.util.AttributeCollections;
 
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +29,7 @@ public class ClassFile {
     private int magic;
     private int minorVersion, majorVersion;
     private ConstantPool constantPool;
-    private Set<ClassFlag> accessFlags = new HashSet<>();
+    private Set<ClassFlag> flags = new HashSet<>();
 
     private String name;
     private String packageName = "";
@@ -55,31 +51,35 @@ public class ClassFile {
         if((signatureAttribute = AttributeCollections.getAttributeByType(this.attributes, AttributeType.SIGNATURE, SignatureAttribute.class)) != null) {
             signatureString = signatureAttribute.getClassGenericString(this);
         }
-        if(this.accessFlags.contains(ClassFlag.ACC_PUBLIC)) {
+        if(this.flags.contains(ClassFlag.ACC_PUBLIC)) {
             stringBuilder.append("public ");
         }
-        if(this.accessFlags.contains(ClassFlag.ACC_FINAL)) {
+        if(this.flags.contains(ClassFlag.ACC_FINAL)) {
             stringBuilder.append("final ");
-        } else if(this.accessFlags.contains(ClassFlag.ACC_ABSTRACT)) {
+        } else if(this.flags.contains(ClassFlag.ACC_ABSTRACT)) {
             stringBuilder.append("abstract");
         }
-        if(this.accessFlags.contains(ClassFlag.ACC_INTERFACE)) {
+        if(this.flags.contains(ClassFlag.ACC_INTERFACE)) {
             stringBuilder.append("interface");
-        } else if(this.accessFlags.contains(ClassFlag.ACC_ENUM)) {
-            stringBuilder.append("enum ");
-        } else if(this.accessFlags.contains(ClassFlag.ACC_ANNOTATION)) {
+        } else if(this.flags.contains(ClassFlag.ACC_ENUM)) {
+            stringBuilder.append("enum");
+        } else if(this.flags.contains(ClassFlag.ACC_ANNOTATION)) {
             stringBuilder.append("@interface");
         } else {
             stringBuilder.append("class");
         }
         stringBuilder.append(" ").append(this.name).append(signatureString);
-        if(superClass != null && this.accessFlags.contains(ClassFlag.ACC_SUPER) && !this.superClass.equals("Object")) {
+        if(!this.flags.contains(ClassFlag.ACC_ENUM) && this.superClass != null && this.flags.contains(ClassFlag.ACC_SUPER) && !this.superClass.equals("Object")) {
             stringBuilder.append(" extends ").append(MethodDescriptor.makeClassName(this.superClass, this));
         }
         if(interfaces.length > 0) {
             stringBuilder.append(" implements ").append(String.join(", ", Arrays.stream(this.interfaces).map(s -> MethodDescriptor.makeClassName(s, this)).collect(Collectors.toList()))).append(" ");
         }
         return stringBuilder.toString();
+    }
+
+    public boolean isEnum() {
+        return this.flags.contains(ClassFlag.ACC_ENUM);
     }
 
     public void writeHeader(PrintWriter output) {

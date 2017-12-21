@@ -17,7 +17,7 @@ public class ANewArrayAction implements ByteCodeInstruction {
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
         Constant constant = context.getConstantPool().get(Helpers.mergeFirst(data));
-        context.getStack().push(new StackItem("new " + MethodDescriptor.makeClassName(constant.toString()) + "[" + context.getStack().pop().getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
+        context.getStack().push(new StackItem("new " + MethodDescriptor.makeClassName(constant.toString(), context.getClassFile()) + "[" + context.getStack().pop().getRefId() + "]", VariableStorage.PrimitiveType.OBJECT));
         return true;
     }
 }

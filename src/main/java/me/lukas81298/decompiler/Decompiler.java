@@ -50,6 +50,10 @@ public class Decompiler {
         this.outputStream.flush();
     }
 
+    private void decompileEnum() {
+        
+    }
+
     public static void decompile(InputStream inputStream, OutputStream outputStream) throws IOException {
         try {
             ClassFile classFile = ClassFileReader.read(inputStream);

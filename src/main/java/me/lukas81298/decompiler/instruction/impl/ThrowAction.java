@@ -12,7 +12,7 @@ public class ThrowAction implements ByteCodeInstruction {
 
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
-        context.getWriter().println(context.getStack().pop().getRefId() + ";", context.getLevel());
+        context.getWriter().println("throw " + context.getStack().pop().getRefId() + ";", context.getLevel());
         return true;
     }
 }
