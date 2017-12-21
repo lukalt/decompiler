@@ -17,7 +17,7 @@ public class GetStaticAction implements ByteCodeInstruction {
     @Override
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
         ConstantFieldRefInfo fieldRef = context.getConstantPool().get(Helpers.mergeFirst(data), ConstantFieldRefInfo.class);
-        String s = MethodDescriptor.makeClassName(fieldRef.getClassName() + "." + fieldRef.getNameAndType().getName());
+        String s = MethodDescriptor.makeClassName(fieldRef.getClassName() + "." + fieldRef.getNameAndType().getName(), context.getClassFile());
         context.getStack().push(new StackItem(s, VariableStorage.PrimitiveType.OBJECT));
         return true;
     }

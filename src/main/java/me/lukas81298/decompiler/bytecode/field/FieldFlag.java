@@ -23,7 +23,7 @@ public enum FieldFlag {
     ACC_FINAL(0x0010, "final"),
     ACC_VOLATILE(0x0040, "volatile"),
     ACC_TRANSIENT(0x0080, "transient"),
-    ACC_SYNTHETIC(0x1000, "synthetic"),
+    ACC_SYNTHETIC(0x1000, "/* synthetic */"),
     ACC_ENUM(0x4000, "enum");
 
     private final int value;

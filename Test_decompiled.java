@@ -3,6 +3,7 @@ package me.lukas81298.decompiler.instruction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import me.lukas81298.decompiler.instruction.Test.a;
 
 public class Test<K, V extends List> {
 
@@ -20,6 +21,16 @@ public class Test<K, V extends List> {
         this.collection = collection;
         this.fieldOfTypeK = new ArrayList();
         this.fieldOfTypeK.addAll(collection);
+    }
+
+    public Test(int k, int fieldA) {
+        this.k = k;
+        this.fieldA = fieldA;
+    }
+
+    public Test(int fieldB, java.util.List<TK fieldOfTypeK, unknown arg3, unknown arg4) {
+        this.fieldB = fieldB;
+        this.fieldOfTypeK = fieldOfTypeK;
     }
 
     private K test(V arg1, boolean b, Object h, java.util.List<TV list, unknown arg5, unknown arg6) {
@@ -79,13 +90,13 @@ public class Test<K, V extends List> {
         Test.a = d;
         Test test = new Test(i, j, e, null);
         test.k = j;
+        test = new Test(a, j);
+        test = new Test(i, null);
         int m = test.k;
         if (i < m) {
             System.exit(e);
         } else {
             System.exit(f);
-            byte elseBlockTest = -1;
-            elseBlockTest++;
         }
         int[] array = new int[2];
         array[0] = 1;

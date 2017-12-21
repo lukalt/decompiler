@@ -117,7 +117,7 @@ public class InstructionRegistry {
                 return entity.action.handle(entity.type, new int[]{ Integer.parseInt(split[1]) }, item.getPc(), context);
             }
         }
-        context.getWriter().println("Unknown opcode " + item.getId() + " with " + Arrays.toString(item.getAdditionalData()));
+        context.getWriter().println("//Unknown opcode " + item.getId() + " with " + Arrays.toString(item.getAdditionalData()), context.getLevel());
         return true;
     }
 

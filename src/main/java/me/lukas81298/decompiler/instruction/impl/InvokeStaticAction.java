@@ -19,7 +19,7 @@ public class InvokeStaticAction implements ByteCodeInstruction {
     public boolean handle(VariableStorage.PrimitiveType type, int[] data, int pc, Context context) {
         ConstantMethodRefInfo methodRefInfo = context.getConstantPool().get(Helpers.mergeFirst(data), ConstantMethodRefInfo.class);
         MethodDescriptor methodDescriptor = methodRefInfo.getMethodDescriptor(context.getClassFile());
-        StringBuilder sb = new StringBuilder(MethodDescriptor.makeClassName(methodRefInfo.getClassName().getName()) + "." + methodRefInfo.getName());
+        StringBuilder sb = new StringBuilder(MethodDescriptor.makeClassName(methodRefInfo.getClassName().getName(), context.getClassFile()) + "." + methodRefInfo.getName());
         sb.append(MethodDescriptor.parseArgumentSignature(methodDescriptor.getArgumentTypes(), context.getStack()));
         if(methodDescriptor.getReturnType().equals("void")) {
             context.getWriter().println(sb.append(";").toString(), context.getLevel());

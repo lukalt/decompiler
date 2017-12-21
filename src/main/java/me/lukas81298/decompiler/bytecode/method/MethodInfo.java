@@ -76,7 +76,7 @@ public class MethodInfo {
         MethodType methodType = MethodType.byName(this.name);
         switch(methodType) {
             case METHOD:
-                sb.append(MethodDescriptor.makeClassName(descriptor.getReturnType(),classFile)).append(" ").append(this.name);
+                sb.append(MethodDescriptor.makeClassName(descriptor.getReturnType(), classFile)).append(" ").append(this.name);
                 break;
             case CONSTRUCTOR:
                 sb.append(classFile.getName());
@@ -129,7 +129,7 @@ public class MethodInfo {
         MethodDescriptor descriptor = MethodDescriptor.parse(this.descriptor, this.classFile);
         // init variable map with method attributes
         for(int j = 1; j <= descriptor.getArgumentTypes().length; j++) {
-            String refName = "par" + j;
+            String refName = "arg" + j;
             if(localVariableAttribute != null) {
                 LocalVariableAttribute.LocalVariable localVariable;
                 if((localVariable = localVariableAttribute.getLocalVariables().get(j)) != null) {

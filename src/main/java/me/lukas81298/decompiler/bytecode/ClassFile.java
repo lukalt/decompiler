@@ -9,6 +9,7 @@ import me.lukas81298.decompiler.bytecode.atrr.AttributeInfo;
 import me.lukas81298.decompiler.bytecode.atrr.AttributeType;
 import me.lukas81298.decompiler.bytecode.atrr.impl.SignatureAttribute;
 import me.lukas81298.decompiler.bytecode.field.FieldInfo;
+import me.lukas81298.decompiler.bytecode.method.MethodDescriptor;
 import me.lukas81298.decompiler.bytecode.method.MethodInfo;
 import me.lukas81298.decompiler.util.AttributeCollections;
 
@@ -17,6 +18,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author lukas
@@ -72,10 +74,10 @@ public class ClassFile {
         }
         stringBuilder.append(" ").append(this.name).append(signatureString);
         if(superClass != null && this.accessFlags.contains(ClassFlag.ACC_SUPER) && !this.superClass.equals("Object")) {
-            stringBuilder.append(" extends").append(this.superClass);
+            stringBuilder.append(" extends ").append(MethodDescriptor.makeClassName(this.superClass, this));
         }
         if(interfaces.length > 0) {
-            stringBuilder.append(" implements ").append(String.join(", ", Arrays.asList(this.interfaces))).append(" ");
+            stringBuilder.append(" implements ").append(String.join(", ", Arrays.stream(this.interfaces).map(s -> MethodDescriptor.makeClassName(s, this)).collect(Collectors.toList()))).append(" ");
         }
         return stringBuilder.toString();
     }

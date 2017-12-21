@@ -51,9 +51,14 @@ public class Decompiler {
     }
 
     public static void decompile(InputStream inputStream, OutputStream outputStream) throws IOException {
-        ClassFile classFile = ClassFileReader.read(inputStream);
-        Decompiler decompiler = new Decompiler(classFile, outputStream, classFile.getConstantPool());
-        decompiler.decompile();
+        try {
+            ClassFile classFile = ClassFileReader.read(inputStream);
+            Decompiler decompiler = new Decompiler(classFile, outputStream, classFile.getConstantPool());
+            decompiler.decompile();
+        } catch(Throwable t) {
+            t.printStackTrace(new PrintStream(outputStream));
+            outputStream.flush();
+        }
     }
 
 }

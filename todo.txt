@@ -1,0 +1,4 @@
+Implement the following opcodes:
+
+checkcast
+athrow

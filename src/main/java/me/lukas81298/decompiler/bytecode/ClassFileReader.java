@@ -38,6 +38,7 @@ public class ClassFileReader {
 
         classFile.setConstantPool(constants);
         classFile.setAccessFlags(ClassFlag.fromBitMask(input.readUnsignedShort()));
+
         classFile.setName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName().replace("/", "."));
         if(classFile.getName().contains(".")) {
             String full = classFile.getName();
@@ -46,6 +47,9 @@ public class ClassFileReader {
         }
         classFile.setSuperClass(MethodDescriptor.makeClassName(constants.get(input.readUnsignedShort(), ConstantClassInfo.class).getName()));
 
+        if(classFile.getAccessFlags().contains(ClassFlag.ACC_INTERFACE) || classFile.getAccessFlags().contains(ClassFlag.ACC_INTERFACE) ||classFile.getAccessFlags().contains(ClassFlag.ACC_INTERFACE) ) {
+            return classFile;
+        }
 
         classFile.setInterfaces(new String[input.readUnsignedShort()]);
         for(int i = 0; i < classFile.getInterfaces().length; i++) {

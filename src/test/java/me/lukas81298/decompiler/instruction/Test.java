@@ -27,6 +27,16 @@ public class Test<K,V extends List> {
         this.fieldOfTypeK.addAll(collection);
     }
 
+    public Test(int k, int fieldA) {
+        this.k = k;
+        this.fieldA = fieldA;
+    }
+
+    public Test(int fieldB, List<K> fieldOfTypeK) {
+        this.fieldB = fieldB;
+        this.fieldOfTypeK = fieldOfTypeK;
+    }
+
     private K test(V arg1, boolean b, Object h, List<V> list) {
         return this.fieldOfTypeK.get(0);
     }
@@ -86,6 +96,9 @@ public class Test<K,V extends List> {
 
         Test test = new Test(i, j, e, null);
         test.k = j;
+
+        test = new Test(a, j);
+        test = new Test(i, null);
 
         int m = test.k;
         if(m < i) {

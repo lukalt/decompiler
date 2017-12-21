@@ -20,7 +20,7 @@ public class VariableStorage {
 
     @Getter
     private final static PrimitiveType[] primitiveTypesAndObject = new PrimitiveType[]{
-            PrimitiveType.INT, PrimitiveType.DOUBLE, PrimitiveType.FLOAT, PrimitiveType.BYTE, PrimitiveType.LONG, PrimitiveType.OBJECT
+            PrimitiveType.INT, PrimitiveType.DOUBLE, PrimitiveType.FLOAT, PrimitiveType.BYTE, PrimitiveType.LONG, PrimitiveType.OBJECT, PrimitiveType.CHAR
     };
 
     private final TIntObjectMap<StackItem> variables = new TIntObjectHashMap<>();

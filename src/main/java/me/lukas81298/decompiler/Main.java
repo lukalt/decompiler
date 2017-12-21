@@ -1,5 +1,7 @@
 package me.lukas81298.decompiler;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.*;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -19,7 +21,7 @@ public class Main {
                 return;
             }
             File output = new File(args[1]);
-
+            System.out.println(File.separator);
             if(input.getName().endsWith(".jar")) {
                 if(!output.exists()) {
                     assert output.mkdir();
@@ -29,9 +31,18 @@ public class Main {
                     Enumeration<JarEntry> enumeration = jarFile.entries();
                     while(enumeration.hasMoreElements()) {
                         JarEntry entry = enumeration.nextElement();
-                        if(entry.getName().endsWith(".class")) {
+                        String name1 = entry.getName();
+                        System.out.println(name1);
+                        if(name1.endsWith(".class")) {
                             InputStream inputStream = jarFile.getInputStream(entry);
-                            Decompiler.decompile(inputStream, new FileOutputStream(new File(output, entry.getName())));
+                            String path = StringUtils.substringBeforeLast(name1, "/");
+                            String name = StringUtils.substringAfterLast(name1, "/" ).replace(".class", ".java");
+                            File dir = new File(output, path);
+                            if(!dir.exists()) {
+                                dir.mkdirs();
+                            }
+                            File file = new File(dir, name);
+                            Decompiler.decompile(inputStream, new FileOutputStream(file));
                         }
                     }
                 } catch(IOException e) {
