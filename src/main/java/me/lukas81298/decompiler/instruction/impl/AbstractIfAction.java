@@ -3,9 +3,9 @@ package me.lukas81298.decompiler.instruction.impl;
 import gnu.trove.set.hash.TIntHashSet;
 import lombok.RequiredArgsConstructor;
 import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
-import me.lukas81298.decompiler.instruction.Context;
 import me.lukas81298.decompiler.instruction.BlockProcessor;
 import me.lukas81298.decompiler.instruction.ByteCodeInstruction;
+import me.lukas81298.decompiler.instruction.Context;
 import me.lukas81298.decompiler.util.*;
 
 /**
@@ -37,24 +37,19 @@ public class AbstractIfAction implements ByteCodeInstruction {
         CodeAttribute.CodeItem codeItem;
         while((codeItem = slice.poll()) != null) {
             if(codeItem.getId().equals("goto")) {
-                int gotoTarget = Helpers.mergeFirst(codeItem.getAdditionalData()) + codeItem.getPc();
-                System.out.println("goto " + gotoTarget + " " + target + " " + codeItem.getPc());
+                int gotoTarget = codeItem.getAdditionalData()[0] + codeItem.getPc();
                 if(gotoTarget < codeItem.getPc()) {
                     type = StructureType.WHILE;
-                } else {
-                    CodeAttribute.CodeItem next = slice.peek();
-                    if(next != null ) {
-                        System.out.println(next.getPc());
-                        if(next.getPc() == gotoTarget){
-                            type = StructureType.IF_ELSE;
-                            elseTarget = codeItem.getPc();
-                        }
-                    }
+                    break;
+                }
+                if(gotoTarget > target) {
+                    elseTarget = gotoTarget;
+                    type = StructureType.IF_ELSE;
+                    break;
                 }
                 break;
             }
         }
-        System.out.println(type.name());
         context.getWriter().println((type == StructureType.WHILE ? "while" : "if") + " (" + operand + ") {", context.getLevel());
 
         BlockProcessor processor = new BlockProcessor(new Context(context.getClassFile(), context.getLevel() + 1, context.getVariables(), context.getWriter(), new TIntHashSet(context.getDefinedVariables()), context.getConstantPool(), context.getLocalVariables(), context.getQueue()));

@@ -24,7 +24,6 @@ public class BlockProcessor {
             INSTRUCTION_REGISTRY.invoke(this.context, item, item.getAdditionalData());
             if(this.context.getQueue().available()) {
                 if(limit > -1 && this.context.getQueue().peek().getPc() == limit) {
-                    System.out.println("RETURN AT " + item.getPc());
                     return;
                 }
             }

@@ -47,8 +47,12 @@ public enum AttributeType {
                 }
                 wide = false;
             } else {
-                for(int i = 0; i < data.length; i++) {
-                    data[i] = buffer.readUnsignedByte();
+                if(opcodeItem.getName().equals("goto")) {
+                    data[0] = buffer.readShort(); // todo handle in a better way
+                } else {
+                    for(int i = 0; i < data.length; i++) {
+                        data[i] = buffer.readUnsignedByte();
+                    }
                 }
             }
             CodeAttribute.CodeItem e = new CodeAttribute.CodeItem(opcodeItem.getName(), data, pc);

@@ -5,6 +5,7 @@ import me.lukas81298.decompiler.bytecode.atrr.impl.CodeAttribute;
 import me.lukas81298.decompiler.instruction.impl.*;
 import me.lukas81298.decompiler.util.VariableStorage;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public class InstructionRegistry {
 
         this.register(NewAction.class, "new");
 
-        this.register(true, PrimitiveCastAction.class,"f2", VariableStorage.PrimitiveType.INT, VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.LONG);
+        this.register(true, PrimitiveCastAction.class, "f2", VariableStorage.PrimitiveType.INT, VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.LONG);
         this.register(true, PrimitiveCastAction.class, "d2", VariableStorage.PrimitiveType.FLOAT, VariableStorage.PrimitiveType.INT, VariableStorage.PrimitiveType.LONG);
         this.register(true, PrimitiveCastAction.class, "i2", VariableStorage.PrimitiveType.BYTE, VariableStorage.PrimitiveType.CHAR, VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.FLOAT, VariableStorage.PrimitiveType.LONG, VariableStorage.PrimitiveType.SHORT);
         this.register(true, PrimitiveCastAction.class, "l2", VariableStorage.PrimitiveType.DOUBLE, VariableStorage.PrimitiveType.FLOAT, VariableStorage.PrimitiveType.INT);
@@ -90,13 +91,13 @@ public class InstructionRegistry {
         this.register(new AbstractIfAction("{0} != 0"), "ifne");
         this.register(new AbstractIfAction("{0} != null"), "ifnonnull");
         this.register(new AbstractIfAction("{0} == null"), "ifnull");
-        this.register(new BiAbstractIfAction("{0} == {1}" ), "if_acmpeq");
-        this.register(new BiAbstractIfAction("{0} != {1}" ), "if_acmpne");
-        this.register(new BiAbstractIfAction("{0} == {1}" ), "if_icmpeq");
-        this.register(new BiAbstractIfAction("{0} < {1}" ), "if_icmpge");
-        this.register(new BiAbstractIfAction("{0} <= {1}" ), "if_icmpgt");
-        this.register(new BiAbstractIfAction("{0} >= {1}" ), "if_icmple");
-        this.register(new BiAbstractIfAction("{0} > {1}" ), "if_icmplt");
+        this.register(new BiAbstractIfAction("{0} == {1}"), "if_acmpeq");
+        this.register(new BiAbstractIfAction("{0} != {1}"), "if_acmpne");
+        this.register(new BiAbstractIfAction("{0} == {1}"), "if_icmpeq");
+        this.register(new BiAbstractIfAction("{0} < {1}"), "if_icmpge");
+        this.register(new BiAbstractIfAction("{0} <= {1}"), "if_icmpgt");
+        this.register(new BiAbstractIfAction("{0} >= {1}"), "if_icmple");
+        this.register(new BiAbstractIfAction("{0} > {1}"), "if_icmplt");
         this.register(ThrowAction.class, "throw");
         this.register(GoToAction.class, "goto");
         this.register(GoToAction.class, "goto_w");
@@ -113,10 +114,10 @@ public class InstructionRegistry {
             String[] split = item.getId().split("_");
             entity = this.actionMap.get(split[0]);
             if(entity != null) {
-                return entity.action.handle(entity.type, new int[] {Integer.parseInt(split[1])}, item.getPc(), context);
+                return entity.action.handle(entity.type, new int[]{ Integer.parseInt(split[1]) }, item.getPc(), context);
             }
         }
-        System.out.println(item.getId() + " not found");
+        context.getWriter().println("Unknown opcode " + item.getId() + " with " + Arrays.toString(item.getAdditionalData()));
         return true;
     }
 
@@ -141,7 +142,7 @@ public class InstructionRegistry {
     }
 
     private void register(ByteCodeInstruction action, String tag) {
-        this.actionMap.put(tag, new Entity(action,null));
+        this.actionMap.put(tag, new Entity(action, null));
     }
 
 }

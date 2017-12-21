@@ -30,7 +30,7 @@ public class Test<K, V extends List> {
         byte z = b;
         short s = z.length;
         Short sh = 0;
-        if (s < sh) {
+        while (s < sh) {
             int i = z[sh];
             a = i + a;
             sh++;
@@ -82,8 +82,11 @@ public class Test<K, V extends List> {
         int m = test.k;
         if (i < m) {
             System.exit(e);
+        } else {
+            System.exit(f);
+            byte elseBlockTest = -1;
+            elseBlockTest++;
         }
-        System.exit(f);
         int[] array = new int[2];
         array[0] = 1;
         array[1] = d;
@@ -98,7 +101,7 @@ public class Test<K, V extends List> {
         // Warning: Currently anonymous inner classes are not supported, please decompile Test$1 yourself
         new Test$1(list);
         test.a(e, d, j, list);
-        if (i < j) {
+        while (i < j) {
             j++;
         }
     }
